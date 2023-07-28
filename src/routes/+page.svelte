@@ -16,7 +16,7 @@ export async function loadPageData() {
     export async function load() {
       try {
         const hygraph = new GraphQLClient(
-          'https://api-us-east-1-shared-usea1-02.hygraph.com/v2/clkmp8odd0dul01t66wre7vdk/master',
+          import.meta.env.VITE_GRAPHQL_API,
           {
             headers: {},
           }
