@@ -1,30 +1,20 @@
 <script>
+	import { Card, Heading } from "flowbite-svelte";
+
 	export let data;
 </script>
 
 
-<h1>Blog Posts</h1>
+<Heading tag="h1" class="m-5" color='text-blue-800 dark:text-white'>
+    Blog Posts
+</Heading>
 {#if data}
-    <ul>
         {#each data.summary as blog}
-            <li>
-                <div>
-                    <a href="/blog/{blog.slug}">{blog.title}</a>
+                <div class="pb-5 m-5">
+                    <Card href="/blog/{blog.slug}">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight">{blog.title}</h5>
+                    </Card>
                 </div>
-            </li>
         {/each}
-    </ul> 
+     
 {/if}
-
-<style>
-    div{
-        border: 1px solid #ccc;
-        background-color: aliceblue;
-        padding: 10px;
-    }
-    div > a{
-        font-family: cursive;
-        font-size: large;
-        color: #333;
-    }
-</style>
