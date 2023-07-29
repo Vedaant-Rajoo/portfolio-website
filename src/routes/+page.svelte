@@ -1,9 +1,13 @@
 <script>
-	import { Alert } from 'flowbite-svelte';
+	import { Alert, Heading, Span } from 'flowbite-svelte';
 </script>
-<h1 class="">Home</h1>
+<Heading tag="h1" class="m-8 self-center">
+    <Span underline decorationClass="decoration-green-500 decoration-wavy">
+        Home
+    </Span>
+</Heading>
 <div class="p-8">
-	<Alert>
+	<Alert class="bg-slate-500">
 		<span class="font-medium">Info alert!</span> Change a few things up and try submitting again.
 	</Alert>
 </div>
