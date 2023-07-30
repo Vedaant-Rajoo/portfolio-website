@@ -1,6 +1,6 @@
 <script>
 	import { Card, Heading } from "flowbite-svelte";
-
+    import '../../app.postcss';
 	export let data;
 </script>
 
