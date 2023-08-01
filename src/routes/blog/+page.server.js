@@ -1,4 +1,4 @@
-import { getPosts } from "$lib/utils";
+import {getPosts} from '$lib/graphql-client'
 
 export async function load() {
     const posts = await getPosts();
@@ -8,14 +8,6 @@ export async function load() {
             error: new Error("Posts not found"),
         };
     }
-    else{
-    return {
-        // @ts-ignore
-        summary: posts.map((/** @type {{ title: any; slug: any; updatedAt: any; }} */ post) => ({
-            title: post.title,
-            slug: post.slug,
-            updatedAt: post.updatedAt,
-        })),
-    };
-}
+    else return posts;
+
 }

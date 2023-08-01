@@ -1,5 +1,4 @@
-import { getPosts } from "$lib/utils";
-
+import { getPosts } from '$lib/graphql-client.js';
 export async function load({ params}) {
     const posts = await getPosts();
     if (!posts) {
@@ -9,7 +8,6 @@ export async function load({ params}) {
         };
     }
     else{
-        // @ts-ignore
         const post = posts.find((post) => post.slug === params.slug);
         return {post}
     }
