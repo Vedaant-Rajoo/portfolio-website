@@ -5,7 +5,7 @@
 	import HeroPost from "$lib/components/HeroPost.svelte";
 </script>
 
-<div class="m-10 pl-5 pr-5 w-full ml-auto mr-auto box-border md:max-w-xl sm:max-w-lg">
+<div class="m-10 pl-5 pr-5 w-full ml-auto mr-auto box-border md:max-w-3xl sm:max-w-2xl lg:max-w-4xl">
     <BlogHero />
     <HeroPost title="HJ" url="https://miro.medium.com/v2/resize:fit:1200/1*YmhQpD6BIT5urZlZ2PPwmw.jpeg" date="2023-07-29T16:38:24.163818+00:00" desc="This is the desc" slug="hello-there"/>
 </div>
