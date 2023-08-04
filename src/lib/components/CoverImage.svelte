@@ -10,6 +10,6 @@
             <img src={url} alt={title} class="hover:shadow-md transition-shadow duration-200" width="2000" height="1000"/>
         </a>
     {:else}
-        <img src={url} alt={title} width="2000" height="1000"/>
+        <img src={url} alt={title} width="1500" height="500"/>
     {/if}
 </div>

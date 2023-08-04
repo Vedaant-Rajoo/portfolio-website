@@ -8,6 +8,8 @@ export async function load() {
             error: new Error("Posts not found"),
         };
     }
+    
     else return posts;
+
 
 }
