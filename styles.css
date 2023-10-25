@@ -1,0 +1,279 @@
+@import"https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap";
+
+:root {
+    --primary-background-color: #151519;
+    --secondary-background-color: #19191d;
+    --tertiary-background-color: #1c1c21;
+    --fff-background-color: #222228;
+    --text-color: #e4e4e4;
+}
+
+a { 
+    all: unset;
+    cursor: pointer;
+}
+
+html {
+    background-color: var(--primary-background-color);
+    font-family: Inter;
+    scroll-behavior: smooth;
+}
+
+html ::-webkit-scrollbar {
+    height: 8px;
+    width: 8px
+}
+
+html ::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-background-color);
+}
+
+html ::-webkit-scrollbar-track {
+    background-color: var(--primary-background-color);
+}
+
+.tippy-box[data-theme~=ws] {
+    color: var(--text-color);
+    background: var(--secondary-background-color);
+    border: 1px solid var(--fff-background-color)
+}
+
+.header {
+    font-weight: 600;
+    padding-top: 175px;
+    padding-left: 20%;
+    padding-bottom: 20px;
+}
+
+.color-text {
+    background-image: linear-gradient(to right, #00b47e, #00a2ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.discord-status {
+    padding-bottom: 7.5px;
+    font-weight: 300;
+    color: var(--text-color);
+    opacity: .8;
+}
+
+.spotify-song {
+    padding-bottom: 7.5px;
+    font-weight: normal;
+    color: var(--text-color);
+    opacity: .8;
+}
+
+.greetings {
+    font-size: 75px;
+    font-weight: 600;
+    color: var(--text-color);
+    padding-bottom: 3.25px;
+}
+
+.about-me {
+    font-weight: 300;
+    color: var(--text-color);
+    opacity: .8;
+    max-width: 525px;
+}
+
+
+.social-card {
+    width: 25px;
+    height: 25px;
+    transition: 0.3s;
+    margin-right: 5px;
+    display: inline-block;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--secondary-background-color);
+    border: 1px solid var(--fff-background-color);
+    color: var(--text-color);
+}
+
+.social-card:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: var(--tertiary-background-color);
+}
+
+.svg {
+    width: 25px;
+    height: 25px;
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	outline: inherit;
+}
+
+.tech-card-display {
+    float: left;
+}
+
+.socials {
+    padding-bottom:10%;
+    padding-left: 20%;
+    display: inline-block;
+}
+
+.project-card {
+    transition: 0.3s;
+    margin-bottom: 20px;
+    display: inline-block;
+    border-radius: 0.375rem;
+    padding: 15px;
+    background-color: var(--secondary-background-color);
+    border: 1px solid var(--fff-background-color);
+    color: var(--text-color);
+    width: 450px;
+    height: 80px;
+    position: relative;
+    display: inline-block;
+}
+
+.project-text {
+    padding-bottom: 7.5%;
+    padding-left: 20%;
+    color: hsla(0,0%,100%,.9);
+}
+
+.container {
+    padding-top: 20px;
+    padding-left: 20%;
+    padding-bottom: 5%;
+    max-width: 1250px;
+}
+
+.project-title {
+    font-size: 17.5px;
+    padding-top: 15px;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+.project-description {
+    font-size: 15px;
+    color: var(--text-color);
+    opacity: 0.5;;
+    font-weight: 300;
+}
+
+.technologies-text {
+    padding-bottom: 7.5%;
+    padding-left: 20%;
+    color: var(--text-color);
+}
+
+.tech-sub {
+    font-size: .875rem;
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+.arrow {
+    cursor: pointer;
+    transition: 0.3s;
+    float: right;
+}
+
+.arrow:hover {
+    transition: 0.3s;
+    rotate: 90deg;
+}
+
+.technologies-card {
+    margin-bottom: 7.5px;
+    transition: 0.3s;
+    margin-right: 5px;
+    display: inline-block;
+    border-radius: 0.375rem;
+    padding: 15px;
+    background-color: var(--secondary-background-color);
+    border: 1px solid var(--fff-background-color);
+    color: var(--text-color);
+    width: 250px;
+    height: 25px;
+    position: relative;
+    display: inline-block;
+}
+
+.technologies-card:hover {
+    transition: 0.3s;
+    background-color: var(--tertiary-background-color);
+}
+
+.tech-card-desc {
+    position: absolute;
+    top: 7px; 
+    color: rgba(255,255,255,0.8);
+    padding: 10px; 
+}
+
+
+.bar {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 6px 0;
+}
+
+@media screen and (max-width: 1200px) {
+
+    .header {
+        padding-top: 10%;
+        padding-left: 5%;
+    }
+
+    .about-me {
+        max-width: 300px;
+    }
+
+
+    .technologies-card {
+        width: 300px; 
+        padding-left: 5%;
+        margin-bottom: 12.5px; 
+    }
+
+    .project-card {
+        max-width: 300px;
+        margin-bottom: 12.5px; 
+    }
+
+    .container {
+        padding-top: 20px;
+        padding-left: 10%;
+        padding-bottom: 5%;
+    }
+
+    .technologies-text {
+        padding-left: 5%;
+    }
+
+    .project-text {
+        padding-left: 5%;
+    }
+
+    .technologies {
+        padding-left: 5%;
+    }
+
+    .container {
+        padding-left: 5%;
+    }
+
+    .socials {
+        padding-left: 5%;
+    }
+
+}
+
+
+
+
+
+
