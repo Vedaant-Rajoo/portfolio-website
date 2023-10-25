@@ -13,9 +13,7 @@
                 FULL-STACK DEVELOPER
             </span>
         </div>
-        <div class="col-span-1 h-52 fade-in-image">
-            <img src="https://ucarecdn.com/70929eda-3257-4ea3-ab7e-e1a9157e1eb0/-/preview/-/rasterize/" alt="dood" class="w-full h-full object-contain">
-        </div>
+        <div></div>
         <div class="fade-in-image">
             <img src="https://ucarecdn.com/540f77aa-83be-45c4-871a-77945d1bfb88/vr.png" alt="">
         </div>
