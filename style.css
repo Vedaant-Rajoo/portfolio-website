@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.cursor-pointer:hover {
+  cursor: none; /* Hides the default cursor */
+}
+#customCursor {
+    pointer-events: none; /* Makes the cursor click-through */
+    transition: transform 0.3s ease;
+}
