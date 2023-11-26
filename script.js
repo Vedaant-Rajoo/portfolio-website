@@ -37,15 +37,16 @@ function updateNavIndicator() {
 
   document.querySelectorAll('nav ul li span').forEach(span => {
     span.classList.remove('opacity-100');
+    span.classList.add('opacity-0');
   });
 
   if (activeSection) {
-    const activeLink = document.querySelector(`nav a[href="#${activeSection}"]`);
+    const activeLink = document.querySelector(`nav li a[href="#${activeSection}"]`);
     if (activeLink) {
       activeLink.parentNode.querySelector('span').classList.add('opacity-100');
+      activeLink.parentNode.querySelector('span').classList.remove('opacity-0');
     }
   }
-  console.log(activeSection);
 }
 
 window.addEventListener('scroll', updateNavIndicator);
