@@ -22,15 +22,25 @@
           id="navbarName"
           type="button"
           class="text-2xl font-medium text-stone-900 focus:outline-none focus-visible:text-orange-600 focus-visible:underline"
-        >
-          vedaant rajoo</button
-        >
+          ><a href="#"> vedaant rajoo </a>
+        </button>
         <ul
           class="ml-auto flex w-full justify-between gap-x-8 rounded-full bg-stone-200 px-8 py-3 md:w-auto md:justify-start"
         >
           <li class="relative flex items-center"
             ><span
-              class="opacity-100 absolute -left-4 h-[8px] w-[8px] rounded-full bg-orange-600 transition-opacity duration-500 ease-out"
+              class="opacity-0 absolute -left-4 h-[8px] w-[8px] rounded-full bg-orange-600 transition-opacity duration-500 ease-out"
+            ></span
+            ><a
+              href="#hi"
+              class="text-base font-normal text-stone-700 no-underline hover:underline focus:outline-none focus-visible:text-orange-600 focus-visible:underline"
+            >
+              Hi</a
+            >
+          </li>
+          <li class="relative flex items-center"
+            ><span
+              class="opacity-0 absolute -left-4 h-[8px] w-[8px] rounded-full bg-orange-600 transition-opacity duration-500 ease-out"
             ></span
             ><a
               href="#about"
@@ -65,7 +75,7 @@
       </nav>
     </div>
     <!-- hero section -->
-    <section class="mx-auto max-w-6xl py-12 px-4 md:py-16 md:px-8 lg:py-24">
+    <div class="mx-auto max-w-6xl py-12 px-4 md:py-16 md:px-8 lg:py-24">
       <h2
         class="mx-auto max-w-[32.5rem] text-center text-3xl font-bold text-stone-900 md:text-4xl lg:mx-0 lg:max-w-2xl lg:text-left lg:text-5xl"
       >
@@ -73,7 +83,11 @@
       </h2>
       <div class="mt-8 flex justify-between md:mt-10 lg:mt-12">
         <div class="mx-auto h-[21.25rem] w-[32.5rem] overflow-hidden lg:mx-0">
-          <img alt="Image Description" src="d3.png" class="object-cover" />
+          <img
+            alt="Image Description"
+            src="assets/d3.png"
+            class="object-cover"
+          />
         </div>
         <div
           class="mx-auto mt-auto w-full max-w-[32.5rem] overflow-x-hidden lg:mx-0 lg:w-[22.5rem]"
@@ -118,14 +132,75 @@
           </p>
         </div>
       </div>
+    </div>
+    <!-- hi section -->
+    <div
+      id="hi"
+      class="mx-auto flex max-w-6xl justify-between py-6 px-4 md:py-8 md:px-8"
+      style="opacity: 1"
+    >
+      <p class="text-lg font-bold uppercase text-stone-500 md:text-xl">01</p>
+      <h2 class="text-lg font-bold uppercase text-stone-900 md:text-xl">Hi!</h2>
+    </div>
+    <section class="py-8">
+      <div class="mx-auto max-w-6xl px-4 md:py-16 md:px-8 lg:py-24">
+        <h3 class="text-2xl font-bold text-stone-900 md:text-4xl mb-8 pb-8"
+          >Right Now I am <span id="discord-status-highlight"></span
+        ></h3>
+        <div class="pt-6 flex flex-col lg:flex-row justify-around items-center">
+          <!-- Now Playing -->
+          <div class="mb-4 lg:mb-0 text-center lg:text-left">
+            <div class="mb-2">
+              <img
+                src="assets/h0.gif"
+                alt="Anime Status"
+                class="inline-block w-8 h-8"
+              />
+            </div>
+            <h3 class="text-xl font-medium text-stone-700 mb-1"
+              >Listening to:</h3
+            >
+            <p id="spotify-song" class="text-stone-600 text-lg"></p>
+          </div>
+          <!-- Discord Status -->
+          <div class="mb-4 lg:mb-0 text-center lg:text-left">
+            <div class="mb-2">
+              <img
+                src="assets/h1.gif"
+                alt="Anime Status"
+                class="inline-block w-8 h-8"
+              />
+            </div>
+            <h3 class="text-xl font-medium text-stone-700 mb-1"
+              >Or Watching:</h3
+            >
+            <p id="latestAnime" class="text-stone-600 text-lg"></p>
+          </div>
+          <!-- Github Stats -->
+          <div class="text-center lg:text-left">
+            <div class="mb-2">
+              <img
+                src="assets/h2.gif"
+                alt="Github Stats"
+                class="inline-block w-30 h-8"
+              />
+            </div>
+            <h3 class="text-xl font-medium text-stone-700 mb-1"
+              >Or Working On:</h3
+            >
+            <a id="github-repo" class="text-blue-600 text-lg"></a>
+          </div>
+        </div>
+      </div>
     </section>
+
     <!-- about section -->
     <div
       id="about"
       class="mx-auto flex max-w-6xl justify-between py-6 px-4 md:py-8 md:px-8"
       style="opacity: 1"
     >
-      <p class="text-lg font-bold uppercase text-stone-500 md:text-xl">01</p>
+      <p class="text-lg font-bold uppercase text-stone-500 md:text-xl">02</p>
       <h2 class="text-lg font-bold uppercase text-stone-900 md:text-xl"
         >About</h2
       >
@@ -159,7 +234,7 @@
       </div>
     </section>
     <!-- tech milestones -->
-    <section class="bg-stone-50 py-12">
+    <div class="bg-stone-50 py-12">
       <div class="mx-auto max-w-6xl px-4 md:py-16 md:px-8 lg:py-24">
         <header
           class="flex flex-wrap justify-center lg:justify-between place-content-center"
@@ -204,9 +279,9 @@
           </div>
         </header>
       </div>
-    </section>
+    </div>
     <!-- tech skills -->
-    <section class="py-12">
+    <div class="py-12">
       <div class="mx-auto max-w-6xl px-4 md:py-16 md:px-8 lg:py-24">
         <header class="flex flex-wrap place-content-center lg:justify-between">
           <h3
@@ -226,8 +301,8 @@
           </div>
         </header>
       </div>
-    </section>
-    <section class="m-auto max-w-[100vw] overflow-hidden py-8"
+    </div>
+    <div class="m-auto max-w-[100vw] overflow-hidden py-8"
       ><div class="flex gap-x-4 md:gap-x-6 lg:gap-x-8"
         ><div
           class="flex min-w-full shrink-0 animate-marquee-small items-center justify-around gap-x-4 motion-reduce:animate-none md:animate-marquee-medium md:gap-x-6 lg:animate-marquee-large lg:gap-x-8"
@@ -272,35 +347,308 @@
             >back end development</p
           ></div
         ></div
-      ></section
+      >
+    </div>
+    <!-- work section -->
+    <div
+      id="work"
+      class="mx-auto flex max-w-6xl justify-between py-6 px-4 md:py-8 md:px-8"
+      style="opacity: 1"
+      ><p class="text-lg font-bold uppercase text-stone-500 md:text-xl">03</p
+      ><h2 class="text-lg font-bold uppercase text-stone-900 md:text-xl"
+        >Work</h2
+      ></div
     >
+    <section>
+      <div class="mx-auto max-w-6xl px-4 md:py-16 md:px-8 lg:py-24">
+        <header class="flex flex-wrap place-content-center lg:justify-between">
+          <h3
+            class="w-full max-w-[32.5rem] text-2xl font-medium text-stone-900 md:text-4xl lg:w-max lg:max-w-[28.75rem]"
+            style="opacity: 1; transform: translateY(0%) translateZ(0px)"
+            >My Work</h3
+          >
+          <div
+            class="lg:max-w-[28.75rem mt-4 w-full max-w-[32.5rem] text-left text-sm font-normal text-stone-700 md:mt-8 md:text-lg lg:mt-0 lg:w-max"
+            style="opacity: 1; transform: translateY(0%) translateZ(0px)"
+          >
+            <p
+              >I’ve had the privilege of working with some amazing companies and
+              individuals. Here are some of my favorites.</p
+            >
+          </div>
+        </header>
+      </div>
+      <div
+        id="workGrid"
+        class="max-w-[1440px] mx-auto px-4 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <!-- First project (spans one column) -->
+        <div
+          class="col-span-1 bg-gray-200 group h-[21.25rem] overflow-hidden relative"
+        >
+          <a href="https://github.com/Vedaant-Rajoo/checkedc-llvm-project">
+            <img
+              src="assets/w1.png"
+              alt="checkedc-llvm-project"
+              class="w-full h-full object-cover transition-all duration-300 ease-in-out"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 ease-in-out"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-full p-4 transition-all duration-500 ease-in-out transform translate-y-full group-hover:translate-y-0"
+            >
+              <p class="text-white text-sm md:text-base lg:text-lg text-bold"
+                >Checked-C Compiler</p
+              >
+              <!-- Subtitle tags for project -->
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >C</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >C++</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >LLVM</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >Clang</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >Compiler</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Second project (spans two columns on large screens) -->
+        <div
+          class="col-span-1 lg:col-span-2 bg-gray-200 group h-[21.25rem] overflow-hidden relative"
+        >
+          <a href="https://github.com/tldr-pages/tldr-c-client">
+            <img
+              src="assets/w2.png"
+              alt="cpz"
+              class="w-full h-full object-cover transition-all duration-300 ease-in-out"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 ease-in-out"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-full p-4 transition-all duration-500 ease-in-out transform translate-y-full group-hover:translate-y-0"
+            >
+              <p class="text-white text-sm md:text-base lg:text-lg text-bold"
+                >CPZ</p
+              >
+              <!-- Subtitle tags for project -->
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >C</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >macos</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >cli</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >tldr</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Third project (spans one column) -->
+        <div
+          class="col-span-1 bg-gray-200 group h-[21.25rem] overflow-hidden relative"
+        >
+          <a href="https://github.com/fossasia/badgeyay">
+            <img
+              src="assets/w4.png"
+              alt="BadgeYay"
+              class="w-full h-full object-cover transition-all duration-300 ease-in-out"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 ease-in-out"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-full p-4 transition-all duration-500 ease-in-out transform translate-y-full group-hover:translate-y-0"
+            >
+              <p class="text-white text-sm md:text-base lg:text-lg text-bold"
+                >BadgeYay</p
+              >
+              <!-- Subtitle tags for project -->
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >ember.js</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >flask</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >oss</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >web</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Fourth Project (Spans one column) -->
+        <div
+          class="col-span-1 bg-gray-200 group h-[21.25rem] overflow-hidden relative"
+        >
+          <a href="https://github.com/0xProject/0x-monorepo">
+            <img
+              src="assets/w3.png"
+              alt="0xProject"
+              class="w-full h-full object-cover transition-all duration-300 ease-in-out"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 ease-in-out"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-full p-4 transition-all duration-500 ease-in-out transform translate-y-full group-hover:translate-y-0"
+            >
+              <p class="text-white text-sm md:text-base lg:text-lg text-bold"
+                >0xProject</p
+              >
+              <!-- Subtitle tags for project -->
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >solidity</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >blockchain</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >web3</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >distributed ledger</span
+                >
+                <span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >mocha</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Fifth project (Spans one Column) -->
+        <div
+          class="col-span-1 bg-gray-200 group h-[21.25rem] overflow-hidden relative"
+        >
+          <a href="https://github.com/named-data/ndn-cxx">
+            <img
+              src="assets/w5.png"
+              alt="ndn-cxx"
+              class="w-full h-full object-cover transition-all duration-300 ease-in-out"
+            />
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 ease-in-out"
+            ></div>
+            <div
+              class="absolute bottom-0 left-0 w-full p-4 transition-all duration-500 ease-in-out transform translate-y-full group-hover:translate-y-0"
+            >
+              <p class="text-white text-sm md:text-base lg:text-lg text-bold"
+                >NDN-cxx</p
+              >
+              <!-- Subtitle tags for project -->
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >c++</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >networking</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >ndn</span
+                ><span
+                  class="text-xs font-medium text-white bg-orange-300 px-2 py-1 rounded-full"
+                  >library</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
 
     <div
       id="contact"
       class="mx-auto flex max-w-6xl justify-between py-6 px-4 md:py-8 md:px-8"
       style="opacity: 1"
-      ><p class="text-lg font-bold uppercase text-stone-500 md:text-xl">03</p
+      ><p class="text-lg font-bold uppercase text-stone-500 md:text-xl">04</p
       ><h2 class="text-lg font-bold uppercase text-stone-900 md:text-xl"
         >Contact</h2
       ></div
     >
-    <section class="mx-auto max-w-6xl px-4 py-16 md:px-8 lg:py-24"
-      ><button
-        id="email"
-        type="button"
-        class="cursor-pointer copy-pointer text-2xl font-bold text-stone-900 hover:underline focus:outline-none focus-visible:text-orange-600 focus-visible:underline md:text-5xl lg:cursor-none lg:text-7xl"
-        style="opacity: 1; transform: translateY(0%) translateZ(0px)"
-        >hunter@hunterbecton.com</button
-      >
-      <div id="customCursor" class="opacity-0 scale-50 absolute top-0 left-0 z-50 p-2 w-20 h-20 bg-stone-50 text-stone-900 text-lg rounded-full flex items-center justify-center">Copy</div>
-      <p
-        class="text-stone-700 mt-4 text-lg font-medium md:mt-8 md:text-2xl lg:mt-16 lg:text-4xl"
-        style="opacity: 1; transform: translateY(0%) translateZ(0px)"
-        >Click email to copy</p
-      ></section
-    >
-    
+    <section>
+      <div class="mx-auto max-w-6xl px-4 md:py-16 md:px-8 lg:py-24">
+        <header
+          class="mb-16 flex flex-wrap place-content-center lg:justify-between"
+        >
+          <h3
+            class="w-full max-w-[32.5rem] text-2xl font-medium text-stone-900 md:text-4xl lg:w-max lg:max-w-[28.75rem]"
+            style="opacity: 1; transform: translateY(0%) translateZ(0px)"
+            >Get in touch!</h3
+          >
+          <div
+            class="lg:max-w-[28.75rem mt-4 w-full max-w-[32.5rem] text-left text-sm font-normal text-stone-700 md:mt-8 md:text-lg lg:mt-0 lg:w-max"
+            style="opacity: 1; transform: translateY(0%) translateZ(0px)"
+          >
+            <p
+              >I’m always open to new opportunities and collaborations.
+              Interested in working together? Drop me a line!
+            </p>
+          </div>
+        </header>
+
+        <button
+          id="email"
+          type="button"
+          class="cursor-pointer copy-pointer text-2xl font-bold text-stone-900 hover:underline focus:outline-none focus-visible:text-orange-600 focus-visible:underline md:text-5xl lg:cursor-none lg:text-7xl"
+          style="opacity: 1; transform: translateY(0%) translateZ(0px)"
+          >vedaant12345@gmail.com</button
+        >
+        <div
+          id="customCursor"
+          class="opacity-0 scale-50 absolute top-0 left-0 z-50 p-2 w-20 h-20 text-lg bg-stone-50 text-green-700 rounded-full flex items-center justify-center"
+          >Copy</div
+        >
+        <p
+          id="copyText"
+          class="text-stone-700 mt-4 text-lg font-medium md:mt-8 md:text-2xl lg:mt-16 lg:text-4xl"
+          style="opacity: 1; transform: translateY(0%) translateZ(0px)"
+          >Click email to copy!</p
+        >
+      </div>
+    </section>
+
+    <footer class="bg-stone-100 text-center py-4">
+      <div class="container mx-auto px-4">
+        <p class="text-stone-700 text-sm md:text-base">
+          &copy;
+          <script>
+            document.write(new Date().getFullYear());
+          </script>
+          Vedaant Rajoo. All Rights Reserved.
+        </p>
+        <p class="text-stone-700 text-sm md:text-base">
+          Made with <span class="text-red-600">&hearts;</span> in HTML/CSS.
+        </p>
+      </div>
+    </footer>
   </body>
-    <script src="script.js"></script>
-    <script src="discord.js"></script>
+  <script src="script.js"></script>
+  <script src="discord.js"></script>
 </html>

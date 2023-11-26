@@ -10,3 +10,22 @@
     pointer-events: none; /* Makes the cursor click-through */
     transition: transform 0.3s ease;
 }
+.music-notes {
+  display: flex;
+  align-items: center;
+  font-size: 24px; /* Adjust size as needed */
+}
+
+.note {
+  animation: bounce 1s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.note1 { animation-delay: 0s; }
+.note2 { animation-delay: 0.2s; }
+.note3 { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
