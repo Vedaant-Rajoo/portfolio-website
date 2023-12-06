@@ -82,7 +82,9 @@
         Software Developer with a creative side.
       </h2>
       <div class="mt-8 flex justify-between md:mt-10 lg:mt-12">
-        <div class="fade-in-up mx-auto h-[21.25rem] w-[32.5rem] overflow-hidden lg:mx-0">
+        <div
+          class="fade-in-up mx-auto h-[21.25rem] w-[32.5rem] overflow-hidden lg:mx-0"
+        >
           <img
             alt="Image Description"
             src="assets/d3.png"
@@ -127,7 +129,9 @@
               >
             </button>
           </div>
-          <p class="fade-in-up mt-16 text-right text-xl font-medium text-stone-500">
+          <p
+            class="fade-in-up mt-16 text-right text-xl font-medium text-stone-500"
+          >
             Based in Indiana <span role="img" aria-label="corn">🌽</span>
           </p>
         </div>
@@ -612,12 +616,27 @@
             </p>
           </div>
         </header>
+        <script>
+          function copyEmailToClipboard() {
+            const email = 'vedaant12345@gmail.com'; // Replace with the email you want to copy
+            navigator.clipboard
+              .writeText(email)
+              .then(() => {
+                // You can add any action here that you want to happen after the email is copied
+                console.log('Email copied to clipboard');
+              })
+              .catch((err) => {
+                console.error('Error in copying email: ', err);
+              });
+          }
+        </script>
 
         <button
           id="email"
           type="button"
-          class="cursor-pointer copy-pointer text-2xl font-bold text-stone-900 hover:underline focus:outline-none focus-visible:text-orange-600 focus-visible:underline md:text-5xl lg:cursor-none lg:text-7xl"
+          class="cursor-pointer copy-pointer text-2xl font-bold text-stone-900 hover:underline focus:outline-none focus-visible:text-orange-600 focus-visible:underline md:text-5xl lg:cursor-none lg:text-7xl md:items-center sm:items-center"
           style="opacity: 1; transform: translateY(0%) translateZ(0px)"
+          onclick="copyEmailToClipboard()"
           >vedaant12345@gmail.com</button
         >
         <div
@@ -638,14 +657,15 @@
       <div class="container mx-auto px-4">
         <p class="text-stone-700 text-sm md:text-base">
           &copy;
+          <span id="copyYear"></span>
           <script>
-            document.write(new Date().getFullYear());
+            const copyYear = new Date().getFullYear();
+            document.getElementById('copyYear').innerHTML = copyYear;
           </script>
           Vedaant Rajoo. All Rights Reserved.
         </p>
         <p class="text-stone-700 text-sm md:text-base">
-          Made with<span class="text-red-600 px-2">&hearts;</span> in
-          HTML/CSS.
+          Made with<span class="text-red-600 px-2">&hearts;</span> in HTML/CSS.
         </p>
       </div>
     </footer>
