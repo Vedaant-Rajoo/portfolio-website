@@ -1,6 +1,6 @@
 # My Personal Website
 
-This is my personal website. It is built using VanillaJs and TailwindCSS. It is hosted on AWS Lambda and AWS API Gateway. The backend is also hosted on AWS Lambda and AWS DynamoDB.
+This is my personal website. It is built using VanillaJs and TailwindCSS. It is hosted on Vercel. The backend is also hosted on Vercel.
 
 ## Status
 
@@ -17,19 +17,17 @@ npm run watch
 
 ## Tech Used
 
-- Svelte
-- SvelteKit
+- HTML
+- CSS
+- JavaScript
 - TailwindCSS
-- AWS Lambda
-- AWS API Gateway
-- AWS DynamoDB
+- Discord API
+
 
 ## TODO
 
 - [ ] Add Animations all over the website
 - [x] Add Hero Animation
-- [ ] Start development of blog site on the same design with SvelteKit
-- [x] Improve backend using AWS Lambda
 - [ ] Fix layout for smaller screens for contact section
 
 ## License
