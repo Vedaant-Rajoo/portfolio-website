@@ -3,6 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .cursor-pointer:hover {
   cursor: none; /* Hides the default cursor */
 }

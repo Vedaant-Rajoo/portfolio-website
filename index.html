@@ -75,22 +75,16 @@
       </nav>
     </div>
     <!-- hero section -->
-    <div class="mx-auto max-w-6xl py-12 px-4 md:py-16 md:px-8 lg:py-24">
+    <section class="mx-auto max-w-6xl py-12 px-4 md:py-16 md:px-8 lg:py-24">
       <h2
         class="fade-in-up mx-auto max-w-[32.5rem] text-center text-3xl font-bold text-stone-900 md:text-4xl lg:mx-0 lg:max-w-2xl lg:text-left lg:text-5xl"
       >
         Software Developer with a creative side.
       </h2>
       <div class="mt-8 flex justify-between md:mt-10 lg:mt-12">
-        <div
-          class="fade-in-up mx-auto h-[21.25rem] w-[32.5rem] overflow-hidden lg:mx-0"
-        >
-          <img
-            alt="Image Description"
-            src="assets/d3.png"
-            class="object-cover"
-          />
-        </div>
+        <div class="w-full lg:w-1/2 mb-8 lg:mb-0">
+        <img src="assets/d3.png" alt="Profile Image" class="w-full h-auto rounded-lg shadow-lg">
+      </div>
         <div
           class="mx-auto mt-auto w-full max-w-[32.5rem] overflow-hidden lg:mx-0 lg:w-[22.5rem]"
         >
@@ -132,11 +126,11 @@
           <p
             class="fade-in-up mt-16 text-right text-xl font-medium text-stone-500"
           >
-            Based in Indiana <span role="img" aria-label="corn">🌽</span>
+            Based in Las Vegas <span role="img" aria-label="slot machine">🎰</span>
           </p>
         </div>
       </div>
-    </div>
+    </section>
     <!-- hi section -->
     <div
       id="hi"
@@ -276,6 +270,12 @@
               <div class="flex justify-between border-b-2 border-stone-300">
                 <h3 class="text-xl font-semibold text-stone-800"
                   >Graduated from Purdue</h3
+                >
+                <span class="text-lg text-stone-600">2023</span>
+              </div>
+              <div class="flex justify-between border-b-2 border-stone-300">
+                <h3 class="text-xl font-semibold text-stone-800"
+                  >Backend Engineer @ Veteran Benefits Guide</h3
                 >
                 <span class="text-lg text-stone-600">2023</span>
               </div>
@@ -618,11 +618,10 @@
         </header>
         <script>
           function copyEmailToClipboard() {
-            const email = 'vedaant12345@gmail.com'; // Replace with the email you want to copy
+            const email = 'vedaant12345@gmail.com';
             navigator.clipboard
               .writeText(email)
               .then(() => {
-                // You can add any action here that you want to happen after the email is copied
                 console.log('Email copied to clipboard');
               })
               .catch((err) => {
