@@ -44,10 +44,14 @@ export function initializeDiscord() {
 
         // Update anime status with truncation
         if (data.kv && data.kv.latestAnime) {
+            const animeTitle = data.kv.latestAnime;
+            const animeLink = data.kv.latestAnimeLink || '#';
             latestAnime.innerHTML = `
                 <div class="max-w-full overflow-hidden">
                     <div class="truncate">
-                        <span class="font-medium">${data.kv.latestAnime}</span>
+                        <a href="${animeLink}" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                            ${animeTitle}
+                        </a>
                     </div>
                 </div>`;
         } else {
