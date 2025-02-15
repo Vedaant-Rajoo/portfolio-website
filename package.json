@@ -21,6 +21,7 @@
   "author": "Vedaant Rajoo",
   "license": "ISC",
   "dependencies": {
+    "@vercel/speed-insights": "^1.2.0",
     "caniuse-lite": "^1.0.30001699",
     "gsap": "^3.12.7",
     "tailwindcss": "^3.3.5"

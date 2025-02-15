@@ -45,3 +45,13 @@
 .fade-in-up {
   animation: fadeInUp 1s ease-out;
 }
+
+#github-repo:hover {
+  color: #008080;
+  font-size: 1.15rem;
+}
+
+#latestAnime:hover {
+  color: #008080;
+  font-size: 1.15rem;
+}

@@ -46,7 +46,7 @@ export function initializeDiscord() {
             latestAnime.innerHTML = `
                 <div class="max-w-full overflow-hidden">
                     <div class="truncate">
-                        <a href="${animeLink}" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                        <a href="${animeLink}" target="_blank" class="text-blue-600 hover:text-green-800 transition-colors duration-200">
                             ${animeTitle}
                         </a>
                     </div>
@@ -62,7 +62,7 @@ export function initializeDiscord() {
             githubRepo.innerHTML = `
                 <div class="max-w-full overflow-hidden">
                     <div class="truncate">
-                        <a href="${repoLink}" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                        <a href="${repoLink}" target="_blank" class="text-blue-600 hover:text-green-800 transition-colors duration-200">
                             ${repoName}
                         </a>
                     </div>
