@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npx tailwindcss -i ./style.css -o ./output.css --watch\" \"webpack serve --mode development\"",
     "prebuild": "npx update-browserslist-db@latest",
-    "build": "npx tailwindcss -i ./style.css -o ./output.css && NEXT_PUBLIC_DISCORD_ID=${NEXT_PUBLIC_DISCORD_ID:-381767483100626945} webpack --mode production",
+    "build": "cross-env NODE_ENV=production npx tailwindcss -i ./style.css -o ./output.css && cross-env NODE_ENV=production NEXT_PUBLIC_DISCORD_ID=${NEXT_PUBLIC_DISCORD_ID:-381767483100626945} webpack --mode production",
     "start": "webpack serve --mode production",
     "lint": "eslint .",
     "clean": "rm -rf dist/*"
@@ -14,7 +14,10 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "keywords": ["portfolio", "personal-website"],
+  "keywords": [
+    "portfolio",
+    "personal-website"
+  ],
   "author": "Vedaant Rajoo",
   "license": "ISC",
   "dependencies": {
@@ -27,6 +30,7 @@
     "@babel/preset-env": "^7.26.9",
     "babel-loader": "^9.2.1",
     "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
     "dotenv-webpack": "^8.1.0",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
