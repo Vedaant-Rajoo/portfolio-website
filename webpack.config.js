@@ -2,7 +2,6 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
-// Get environment variables
 const discordId = process.env.NEXT_PUBLIC_DISCORD_ID || '';
 
 module.exports = {
