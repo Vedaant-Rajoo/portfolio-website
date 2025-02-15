@@ -1,6 +1,6 @@
 export function initializeDiscord() {
     const webSocket = new WebSocket('wss://api.lanyard.rest/socket');
-    const discordID = process.env.NEXT_PUBLIC_DISCORD_ID;
+    const discordID = '381767483100626945';
     if (!discordID) {
         console.error('Discord ID not found in environment variables');
         return;
