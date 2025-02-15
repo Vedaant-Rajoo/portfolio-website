@@ -3,6 +3,7 @@ export function initializeDiscord() {
     const discordID = '381767483100626945';
 
     function updateStatus(data) {
+        console.log(data);
         const statusElement = document.getElementById('discord-status-highlight');
         const spotifySongElement = document.getElementById('spotify-song');
         const latestAnime = document.getElementById('latestAnime');
@@ -109,9 +110,7 @@ export function initializeDiscord() {
         });
 
     webSocket.addEventListener('open', () => {
-        if (process.env.NODE_ENV === 'development') {
-            console.log('WebSocket connected');
-        }
+        console.log('WebSocket connected');
     });
 
     webSocket.addEventListener('error', (error) => {
@@ -119,9 +118,7 @@ export function initializeDiscord() {
     });
 
     webSocket.addEventListener('close', (event) => {
-        if (process.env.NODE_ENV === 'development') {
-            console.log(`WebSocket closed with code ${event.code}`);
-        }
+        console.log(`WebSocket closed with code ${event.code}`);
     });
 
     webSocket.addEventListener('message', (event) => {
