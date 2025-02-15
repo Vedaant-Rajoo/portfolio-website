@@ -32,17 +32,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new Dotenv({
-      systemvars: true, // Load all system variables
-      safe: true, // Load '.env.example' to verify the '.env' variables are all set
-      defaults: true, // Load '.env.defaults' as the default values if empty
-      silent: true // Hide any warnings
-    }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        NEXT_PUBLIC_DISCORD_ID: JSON.stringify(discordId)
-      }
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.NEXT_PUBLIC_DISCORD_ID': JSON.stringify(discordId)
     }),
     new webpack.ProvidePlugin({
       gsap: 'gsap'
