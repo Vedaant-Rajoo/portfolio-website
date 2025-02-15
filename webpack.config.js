@@ -2,7 +2,9 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
+// Ensure Discord ID is available at build time
 const discordId = process.env.NEXT_PUBLIC_DISCORD_ID || '381767483100626945';
+console.log('Using Discord ID:', discordId); // Debug log
 
 module.exports = {
   entry: './src/index.js',
@@ -25,10 +27,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new Dotenv(),
     new webpack.DefinePlugin({
-      'process.env': {
-        'NEXT_PUBLIC_DISCORD_ID': JSON.stringify(discordId)
-      }
+      'process.env.NEXT_PUBLIC_DISCORD_ID': JSON.stringify(discordId)
     }),
     new webpack.ProvidePlugin({
       gsap: 'gsap'
