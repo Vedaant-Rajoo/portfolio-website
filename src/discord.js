@@ -1,6 +1,6 @@
 export function initializeDiscord() {
     const webSocket = new WebSocket('wss://api.lanyard.rest/socket');
-    const discordID = '381767483100626945';
+    const discordID = process.env.NEXT_PUBLIC_DISCORD_ID || '381767483100626945';
     if (!discordID) {
         console.error('Discord ID not found in environment variables');
         return;
@@ -26,19 +26,62 @@ export function initializeDiscord() {
             statusText.charAt(0).toUpperCase() + statusText.slice(1);
         statusElement.style.color = statusColorMap[data.discord_status] || '#80848e';
 
-        // Update Spotify status
+        // Update Spotify status with truncation
         if (data.listening_to_spotify) {
-            spotifySongElement.innerText = `${
-                data.spotify.song
-            } by ${data.spotify.artist.replaceAll(';', ',')}`;
+            const songName = data.spotify.song;
+            const artistName = data.spotify.artist.replaceAll(';', ',');
+            spotifySongElement.innerHTML = `
+                <div class="max-w-full overflow-hidden">
+                    <div class="truncate">
+                        <span class="font-medium">${songName}</span>
+                        <span class="text-stone-500">by</span>
+                        <span class="text-emerald-600">${artistName}</span>
+                    </div>
+                </div>`;
         } else {
-            spotifySongElement.innerText = 'Nothing!';
+            spotifySongElement.innerHTML = '<span class="text-stone-500 italic">Taking a break from music</span>';
         }
-        latestAnime.innerText = data.kv.latestAnime;
-        const repoName = data.kv.githubrepo || 'Nothing!';
-        const repoLink = data.kv.githubrepolink || '#';
-        githubRepo.innerHTML = `<a href="${repoLink}" target="_blank">${repoName}</a>`;
+
+        // Update anime status with truncation
+        if (data.kv && data.kv.latestAnime) {
+            latestAnime.innerHTML = `
+                <div class="max-w-full overflow-hidden">
+                    <div class="truncate">
+                        <span class="font-medium">${data.kv.latestAnime}</span>
+                    </div>
+                </div>`;
+        } else {
+            latestAnime.innerHTML = '<span class="text-stone-500 italic">Not watching anything right now</span>';
+        }
+
+        // Update GitHub status with truncation
+        if (data.kv && data.kv.githubrepo && data.kv.githubrepo !== 'Nothing!') {
+            const repoName = data.kv.githubrepo;
+            const repoLink = data.kv.githubrepolink || '#';
+            githubRepo.innerHTML = `
+                <div class="max-w-full overflow-hidden">
+                    <div class="truncate">
+                        <a href="${repoLink}" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                            ${repoName}
+                        </a>
+                    </div>
+                </div>`;
+        } else {
+            githubRepo.innerHTML = '<span class="text-stone-500 italic">Taking a coding break</span>';
+        }
     }
+
+    // Set initial loading states with proper width constraints
+    const elements = ['discord-status-highlight', 'spotify-song', 'latestAnime', 'github-repo'];
+    elements.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.innerHTML = `
+                <div class="max-w-full overflow-hidden">
+                    <span class="inline-block animate-pulse">Loading...</span>
+                </div>`;
+        }
+    });
 
     fetch(`https://api.lanyard.rest/v1/users/${discordID}`)
         .then((response) => {
@@ -55,6 +98,13 @@ export function initializeDiscord() {
         })
         .catch((error) => {
             console.error('Fetch error:', error);
+            // Handle error states elegantly
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.innerHTML = '<span class="text-stone-500 italic">Temporarily unavailable</span>';
+                }
+            });
         });
 
     webSocket.addEventListener('open', () => {

@@ -2,7 +2,7 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
-const discordId = process.env.NEXT_PUBLIC_DISCORD_ID || '';
+const discordId = process.env.NEXT_PUBLIC_DISCORD_ID || '381767483100626945';
 
 module.exports = {
   entry: './src/index.js',
