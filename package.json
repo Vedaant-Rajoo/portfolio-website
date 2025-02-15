@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"npx tailwindcss -i ./style.css -o ./output.css --watch\" \"webpack serve --mode development\"",
-    "build": "npx tailwindcss -i ./style.css -o ./output.css && webpack --mode production",
+    "prebuild": "npx update-browserslist-db@latest",
+    "build": "NEXT_PUBLIC_DISCORD_ID=$NEXT_PUBLIC_DISCORD_ID npx tailwindcss -i ./style.css -o ./output.css && webpack --mode production",
     "start": "webpack serve --mode production",
     "lint": "eslint .",
     "clean": "rm -rf dist/*"

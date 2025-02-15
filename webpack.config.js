@@ -2,6 +2,9 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
+// Get environment variables
+const discordId = process.env.NEXT_PUBLIC_DISCORD_ID || '';
+
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -23,7 +26,11 @@ module.exports = {
     ]
   },
   plugins: [
-    new Dotenv(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NEXT_PUBLIC_DISCORD_ID': JSON.stringify(discordId)
+      }
+    }),
     new webpack.ProvidePlugin({
       gsap: 'gsap'
     })
