@@ -70,6 +70,14 @@ export function initializeDiscord() {
         } else {
             githubRepo.innerHTML = '<span class="text-stone-500 italic">Taking a coding break</span>';
         }
+
+        // Update Lanyard image
+        const lanyardImg = document.querySelector('#discord-card-presence');
+        if (lanyardImg) {
+            // Force refresh the image by adding/updating a timestamp parameter
+            const currentSrc = lanyardImg.src.split('?')[0];
+            lanyardImg.src = `${currentSrc}?theme=light&bg=e7e5e4&borderRadius=8px&animated=true&hideDiscrim=true&t=${Date.now()}`;
+        }
     }
 
     // Set initial loading states with proper width constraints

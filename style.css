@@ -55,3 +55,26 @@
   color: #008080;
   font-size: 1.15rem;
 }
+
+#navbarName {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.group:hover #navbarName {
+  color: #008080;
+}
+
+.group > div {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.group:hover > div {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-delay: 0.1s; /* This ensures the card appears after the button hover effect */
+}
