@@ -17,6 +17,9 @@
   font-size: 24px; /* Adjust size as needed */
 }
 
+#copyYear {
+  padding-right: 0.3rem;
+}
 .note {
   animation: bounce 1s infinite;
   animation-timing-function: ease-in-out;
