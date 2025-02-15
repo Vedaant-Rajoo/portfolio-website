@@ -1,12 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
   output: {
+    filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js',
+    clean: true
   },
   module: {
     rules: [
@@ -26,12 +28,12 @@ module.exports = {
     new webpack.ProvidePlugin({
       gsap: 'gsap'
     }),
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html'
+    }),
     new CopyPlugin({
       patterns: [
-        { 
-          from: 'index.html',
-          to: '' 
-        },
         { 
           from: 'assets',
           to: 'assets'
