@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npx tailwindcss -i ./style.css -o ./output.css --watch\" \"webpack serve --mode development\"",
     "prebuild": "npx update-browserslist-db@latest",
-    "build": "cross-env NODE_ENV=production npx tailwindcss -i ./style.css -o ./output.css && cross-env NODE_ENV=production webpack --mode production",
+    "build": "npx tailwindcss -i ./style.css -o ./output.css && webpack --mode production",
     "start": "webpack serve --mode production",
     "lint": "eslint .",
     "clean": "rm -rf dist/*"
@@ -30,8 +30,6 @@
     "@babel/preset-env": "^7.26.9",
     "babel-loader": "^9.2.1",
     "concurrently": "^9.1.2",
-    "cross-env": "^7.0.3",
-    "dotenv-webpack": "^8.1.0",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0"

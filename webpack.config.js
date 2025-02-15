@@ -1,15 +1,5 @@
 const path = require('path');
-const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
-
-// Debug environment variables
-console.log('Environment Variables Debug:');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('NEXT_PUBLIC_DISCORD_ID from process.env:', process.env.NEXT_PUBLIC_DISCORD_ID);
-
-// Ensure Discord ID is available at build time
-const discordId = process.env.NEXT_PUBLIC_DISCORD_ID || '381767483100626945';
-console.log('Final Discord ID being used:', discordId);
 
 module.exports = {
   entry: './src/index.js',
@@ -32,10 +22,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.NEXT_PUBLIC_DISCORD_ID': JSON.stringify(discordId)
-    }),
     new webpack.ProvidePlugin({
       gsap: 'gsap'
     })

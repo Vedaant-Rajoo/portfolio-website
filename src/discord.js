@@ -1,10 +1,6 @@
 export function initializeDiscord() {
     const webSocket = new WebSocket('wss://api.lanyard.rest/socket');
     const discordID = '381767483100626945';
-    if (!discordID || discordID === '' ) {
-        console.error(`Discord ID not found in environment variables: ${discordID}`);
-        return;
-    }
 
     function updateStatus(data) {
         const statusElement = document.getElementById('discord-status-highlight');
@@ -90,6 +86,7 @@ export function initializeDiscord() {
     fetch(`https://api.lanyard.rest/v1/users/${discordID}`)
         .then((response) => {
             if (!response.ok) {
+                console.error(response);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
