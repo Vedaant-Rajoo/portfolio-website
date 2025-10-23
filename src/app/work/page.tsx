@@ -1,6 +1,6 @@
 import { NavigationHeader, WorkSection } from '@/components/layout';
 
-export default function Home() {
+export default function WorkPage() {
   return (
     <div className='min-h-screen'>
       <NavigationHeader />

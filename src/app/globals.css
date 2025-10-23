@@ -31,6 +31,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-crimson-pro: var(--font-crimson-pro);
+  --font-plantin: "plantin", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -71,9 +72,9 @@
   /* Light mode colors */
   --background: #fafcfd; /* #fafcfd */
   --foreground: #32404f; /* primary text */
-  --foreground-secondary: #3A4046; /* #3A4046 - secondary text */
-  --foreground-subtle: #6E7680; /* #6E7680 - subtle text */
-  
+  --foreground-secondary: #3a4046; /* #3A4046 - secondary text */
+  --foreground-subtle: #6e7680; /* #6E7680 - subtle text */
+
   /* Additional color variables */
   --bg: #fafcfd;
   --surface-1: #ffffff;
@@ -133,7 +134,7 @@
   --foreground: #e6e9ec; /* #E6E9EC - primary text */
   --foreground-secondary: #b8c0c7; /* #B8C0C7 - secondary text */
   --foreground-subtle: #8d98a3; /* #8D98A3 - subtle text */
-  
+
   /* Additional dark mode color variables */
   --bg: #0b0d0e;
   --surface-1: #121517;
@@ -151,7 +152,7 @@
   --info: #76a8e6;
   --focus: #8ab8ff;
   --hover-overlay: rgba(230, 233, 236, 0.06);
-  --active-overlay: rgba(230, 233, 236, 0.10);
+  --active-overlay: rgba(230, 233, 236, 0.1);
   --code-bg: #0f1214;
   --code-text: #dee3e7;
   --diff-add: #143321;
