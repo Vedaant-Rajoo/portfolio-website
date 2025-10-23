@@ -54,7 +54,7 @@ export function FunSection() {
                 Always curious about new technologies and creative applications:
               </p>
               <ul className='space-y-2 text-muted-foreground'>
-                <li>• WebGL and 3D graphics</li>
+                <li>• WebGL3 and 3D graphics</li>
                 <li>• Machine learning for creative use</li>
                 <li>• Blockchain and Web3 technologies</li>
                 <li>• Augmented reality development</li>
