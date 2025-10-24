@@ -31,6 +31,10 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
+        <meta
+          httpEquiv='Content-Security-Policy'
+          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://use.typekit.net https://dev.vedaantrajoo.com; style-src 'self' 'unsafe-inline' https://use.typekit.net https://fonts.googleapis.com; font-src 'self' https://use.typekit.net https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://dev.vedaantrajoo.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        />
         <link rel='stylesheet' href='https://use.typekit.net/ohm3phs.css' />
       </head>
       <body
