@@ -1,12 +1,5 @@
-import { NavigationHeader, WorkSection } from '@/components/layout';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <div className='min-h-screen'>
-      <NavigationHeader />
-      <main>
-        <WorkSection />
-      </main>
-    </div>
-  );
+  redirect('/work');
 }
