@@ -36,12 +36,18 @@ type CursorProviderProps = React.ComponentProps<'div'> & {
 function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   const [cursorPos, setCursorPos] = React.useState({ x: 0, y: 0 });
   const [isActive, setIsActive] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const cursorRef = React.useRef<HTMLDivElement>(null);
   React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
+  // Ensure component only runs on client-side
   React.useEffect(() => {
-    if (!containerRef.current) return;
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (!mounted || !containerRef.current) return;
 
     const parent = containerRef.current.parentElement;
     if (!parent) return;
@@ -64,7 +70,7 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
       parent.removeEventListener('mousemove', handleMouseMove);
       parent.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []);
+  }, [mounted]);
 
   return (
     <CursorContext.Provider value={{ cursorPos, isActive, containerRef, cursorRef }}>
@@ -81,12 +87,20 @@ type CursorProps = HTMLMotionProps<'div'> & {
 
 function Cursor({ ref, children, className, style, ...props }: CursorProps) {
   const { cursorPos, isActive, containerRef, cursorRef } = useCursor();
+  const [mounted, setMounted] = React.useState(false);
   React.useImperativeHandle(ref, () => cursorRef.current as HTMLDivElement);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
+  // Ensure component only runs on client-side
   React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (!mounted) return;
+
     const parentElement = containerRef.current?.parentElement;
 
     // eslint-disable-next-line react-hooks/immutability
@@ -95,7 +109,7 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
     return () => {
       if (parentElement) parentElement.style.cursor = 'default';
     };
-  }, [containerRef, cursorPos, isActive]);
+  }, [mounted, containerRef, cursorPos, isActive]);
 
   React.useEffect(() => {
     x.set(cursorPos.x);
@@ -104,7 +118,7 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
 
   return (
     <AnimatePresence>
-      {isActive && (
+      {mounted && isActive && (
         <motion.div
           ref={cursorRef}
           data-slot='cursor'
@@ -154,8 +168,14 @@ function CursorFollow({
   ...props
 }: CursorFollowProps) {
   const { cursorPos, isActive, cursorRef } = useCursor();
+  const [mounted, setMounted] = React.useState(false);
   const cursorFollowRef = React.useRef<HTMLDivElement>(null);
   React.useImperativeHandle(ref, () => cursorFollowRef.current as HTMLDivElement);
+
+  // Ensure component only runs on client-side
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -217,7 +237,7 @@ function CursorFollow({
 
   return (
     <AnimatePresence>
-      {isActive && (
+      {mounted && isActive && (
         <motion.div
           ref={cursorFollowRef}
           data-slot='cursor-follow'
