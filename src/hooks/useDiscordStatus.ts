@@ -66,6 +66,11 @@ export function useDiscordStatus() {
 
   const wsRef = useRef<WebSocket | null>(null);
   const heartbeatIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const reconnectAttemptsRef = useRef<number>(0);
+  const isUnmountingRef = useRef<boolean>(false);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isClientRef = useRef<boolean>(false);
+  const connectWebSocketRef = useRef<() => void>(() => {});
 
   const getStatusColor = (status: string): string => {
     switch (status) {
@@ -125,6 +130,21 @@ export function useDiscordStatus() {
     return false;
   };
 
+  const clearAllIntervals = () => {
+    if (heartbeatIntervalRef.current) {
+      clearInterval(heartbeatIntervalRef.current);
+      heartbeatIntervalRef.current = null;
+    }
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+  };
+
+  const calculateReconnectDelay = (attempts: number): number => {
+    return Math.min(1000 * Math.pow(2, attempts), 30000);
+  };
+
   const updateStatus = useCallback((data: DiscordStatusData) => {
     // Check for Spotify
     const isListeningToSpotify = data.listening_to_spotify && !!data.spotify;
@@ -166,40 +186,45 @@ export function useDiscordStatus() {
     });
   }, []);
 
-  // Initial fetch
-  useEffect(() => {
-    const fetchInitialStatus = async () => {
-      try {
-        const response = await fetch(LANYARD_API_URL);
-        const data: DiscordApiResponse = await response.json();
+  const scheduleReconnect = useCallback(() => {
+    if (isUnmountingRef.current) return;
 
-        if (data.success && data.data.discord_user) {
-          updateStatus(data.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch Discord status:', error);
+    const delay = calculateReconnectDelay(reconnectAttemptsRef.current);
+    reconnectAttemptsRef.current++;
+
+    reconnectTimeoutRef.current = setTimeout(() => {
+      if (!isUnmountingRef.current) {
+        // Use a ref to avoid circular dependency
+        connectWebSocketRef.current();
       }
-    };
+    }, delay);
+  }, []);
 
-    fetchInitialStatus();
-  }, [updateStatus]);
+  const connectWebSocket = useCallback(() => {
+    if (isUnmountingRef.current) return;
 
-  // WebSocket connection
-  useEffect(() => {
-    const connectWebSocket = () => {
-      // Close existing connection if it exists
-      if (wsRef.current) {
-        wsRef.current.close();
-        wsRef.current = null;
-      }
+    // Clear any existing intervals/timeouts
+    clearAllIntervals();
 
+    // Close existing connection if it exists
+    if (wsRef.current) {
+      wsRef.current.close();
+      wsRef.current = null;
+    }
+
+    try {
       wsRef.current = new WebSocket(LANYARD_WS_URL);
 
       wsRef.current.addEventListener('open', () => {
-        console.log('Discord WebSocket connected');
+        if (isUnmountingRef.current) return;
+
+        // Reset reconnection attempts on successful connection
+        reconnectAttemptsRef.current = 0;
       });
 
       wsRef.current.addEventListener('message', event => {
+        if (isUnmountingRef.current) return;
+
         try {
           const data = JSON.parse(event.data);
 
@@ -215,6 +240,7 @@ export function useDiscordStatus() {
 
             // Set up heartbeat
             heartbeatIntervalRef.current = setInterval(() => {
+              if (isUnmountingRef.current) return;
               safeWebSocketSend({
                 op: 3,
                 d: {
@@ -241,28 +267,67 @@ export function useDiscordStatus() {
       });
 
       wsRef.current.addEventListener('close', () => {
-        console.log('Discord WebSocket disconnected, reconnecting...');
-        // Reconnect after 5 seconds
-        setTimeout(connectWebSocket, 5000);
+        if (isUnmountingRef.current) return;
+
+        // Clear heartbeat interval
+        clearAllIntervals();
+
+        // Schedule reconnection with exponential backoff
+        scheduleReconnect();
       });
 
-      wsRef.current.addEventListener('error', error => {
-        console.error('Discord WebSocket error:', error);
+      wsRef.current.addEventListener('error', () => {
+        if (isUnmountingRef.current) return;
+
+        // Clear heartbeat interval on error
+        clearAllIntervals();
+
+        // Schedule reconnection with exponential backoff
+        scheduleReconnect();
       });
+    } catch (error) {
+      console.error('Failed to create WebSocket connection:', error);
+      if (!isUnmountingRef.current) {
+        scheduleReconnect();
+      }
+    }
+  }, [updateStatus, scheduleReconnect]);
+
+  // Initial fetch and WebSocket connection - only on client side
+  useEffect(() => {
+    // Mark as client-side
+    isClientRef.current = true;
+
+    // Assign the function to the ref
+    connectWebSocketRef.current = connectWebSocket;
+
+    const fetchInitialStatus = async () => {
+      try {
+        const response = await fetch(LANYARD_API_URL);
+        const data: DiscordApiResponse = await response.json();
+
+        if (data.success && data.data.discord_user) {
+          updateStatus(data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch Discord status:', error);
+      }
     };
 
+    fetchInitialStatus();
     connectWebSocket();
 
     // Cleanup
     return () => {
-      if (heartbeatIntervalRef.current) {
-        clearInterval(heartbeatIntervalRef.current);
-      }
+      isUnmountingRef.current = true;
+      clearAllIntervals();
+
       if (wsRef.current) {
         wsRef.current.close();
+        wsRef.current = null;
       }
     };
-  }, [updateStatus]);
+  }, [updateStatus, connectWebSocket]); // Include dependencies
 
   return discordStatus;
 }

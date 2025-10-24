@@ -2,18 +2,18 @@
 
 import { Button } from '@/components/ui/button';
 import { Moon, Sun } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import * as React from 'react';
-import { animate } from 'animejs';
+import React, { useState, useEffect } from 'react';
 
 export function ThemeToggle() {
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const iconRef = React.useRef<HTMLDivElement>(null);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
 
-  React.useEffect(() => {
-    setMounted(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setMounted(true);
+    }, 100);
   }, []);
 
   if (!mounted) {
@@ -23,53 +23,41 @@ export function ThemeToggle() {
   const toggleTheme = () => {
     const isLight = theme === 'light';
     const newTheme = isLight ? 'dark' : 'light';
-
-    // Animate the icon transition
-    if (iconRef.current && buttonRef.current) {
-      // First, animate the current icon out with rotation and scale
-      animate(iconRef.current, {
-        rotate: { to: 180, duration: 200 },
-        scale: { to: 0.8, duration: 200 },
-        opacity: { to: 0, duration: 150 },
-        ease: 'outQuart',
-      }).then(() => {
-        // Change the theme (this will update the icon)
-        setTheme(newTheme);
-
-        // Animate the new icon in
-        setTimeout(() => {
-          if (iconRef.current) {
-            animate(iconRef.current, {
-              rotate: { to: 0, duration: 200 },
-              scale: { to: 1, duration: 200 },
-              opacity: { to: 1, duration: 150 },
-              ease: 'outBack',
-            });
-          }
-        }, 50);
-      });
-    } else {
-      // Fallback without animation
-      setTheme(newTheme);
-    }
+    setTheme(newTheme);
   };
 
   return (
-    <Button
-      ref={buttonRef}
-      variant='outline'
-      size='icon'
-      onClick={toggleTheme}
-      className='relative overflow-hidden transition-all duration-200 hover:scale-105 active:scale-95'
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
     >
-      <div ref={iconRef} className='flex items-center justify-center'>
-        {theme === 'light' ? (
-          <Sun className='h-[1.2rem] w-[1.2rem]' />
-        ) : (
-          <Moon className='h-[1.2rem] w-[1.2rem]' />
-        )}
-      </div>
-      <span className='sr-only'>Toggle theme</span>
-    </Button>
+      <Button
+        variant='outline'
+        size='icon'
+        onClick={toggleTheme}
+        className='relative overflow-hidden'
+      >
+        <motion.div
+          key={theme}
+          initial={{ rotate: 0, opacity: 0 }}
+          animate={{ rotate: 360, opacity: 1 }}
+          exit={{ rotate: -360, opacity: 0 }}
+          transition={{
+            duration: 0.3,
+            ease: 'easeInOut',
+            opacity: { duration: 0.2 },
+          }}
+          className='flex items-center justify-center'
+        >
+          {theme === 'light' ? (
+            <Sun className='h-[1.2rem] w-[1.2rem]' />
+          ) : (
+            <Moon className='h-[1.2rem] w-[1.2rem]' />
+          )}
+        </motion.div>
+        <span className='sr-only'>Toggle theme</span>
+      </Button>
+    </motion.div>
   );
 }
