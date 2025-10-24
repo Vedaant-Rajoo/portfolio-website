@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Crimson_Pro } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/ui/theme-provider';
-
+import { SpeedInsights } from '@vercel/speed-insights/next';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -42,6 +42,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           {children}
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
