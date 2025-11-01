@@ -1,6 +1,7 @@
 'use client';
 import { useDiscordStatus } from '@/hooks/useDiscordStatus';
 import { SkillsCarousel } from '../features/skills-carousel';
+import { ContactMe } from '../features/contact-me';
 
 const experience = [
   {
@@ -75,6 +76,9 @@ export function WorkSection() {
       </div>
       <div className='w-full max-w-7xl mx-auto items-center justify-center py-12'>
         <SkillsCarousel />
+      </div>
+      <div className='w-full max-w-7xl mx-auto items-center justify-center py-12'>
+        <ContactMe />
       </div>
     </section>
   );
