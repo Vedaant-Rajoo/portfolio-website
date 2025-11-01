@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import type { SVGProps } from 'react';
 import {
   motion,
   useMotionValue,
@@ -12,9 +13,12 @@ import {
 
 import { cn } from '@/lib/utils';
 
+type HoverTarget = 'internal-link' | 'external-link' | 'button' | 'interactive' | 'default';
+
 type CursorContextType = {
   cursorPos: { x: number; y: number };
   isActive: boolean;
+  hoverTarget: HoverTarget;
   containerRef: React.RefObject<HTMLDivElement | null>;
   cursorRef: React.RefObject<HTMLDivElement | null>;
 };
@@ -33,9 +37,80 @@ type CursorProviderProps = React.ComponentProps<'div'> & {
   children: React.ReactNode;
 };
 
+function isExternalLink(linkElement: HTMLAnchorElement): boolean {
+  const href = linkElement.getAttribute('href');
+  if (!href) return false;
+
+  // Check if it's a mailto, tel, or other protocol links (treat as external)
+  if (href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) {
+    return href.startsWith('mailto:') || href.startsWith('tel:');
+  }
+
+  // Check if link has target="_blank" (typically external)
+  if (linkElement.getAttribute('target') === '_blank') {
+    return true;
+  }
+
+  // Check if href starts with http:// or https://
+  if (href.startsWith('http://') || href.startsWith('https://')) {
+    // If it's a full URL, check if it's the same origin
+    try {
+      const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+      const linkUrl = new URL(href, currentOrigin);
+      return linkUrl.origin !== currentOrigin;
+    } catch {
+      // If URL parsing fails, assume external
+      return true;
+    }
+  }
+
+  // Relative paths (starting with /) are internal
+  return false;
+}
+
+function detectHoverTarget(element: Element | null): HoverTarget {
+  if (!element) return 'default';
+
+  // Check if it's a link (check before button since buttons can be inside links)
+  const linkElement =
+    element.tagName === 'A'
+      ? (element as HTMLAnchorElement)
+      : (element.closest('a') as HTMLAnchorElement | null);
+
+  if (linkElement) {
+    return isExternalLink(linkElement) ? 'external-link' : 'internal-link';
+  }
+
+  // Check if it's a button
+  // Check for shadcn Button component (has data-slot="button")
+  if (
+    element.tagName === 'BUTTON' ||
+    element.getAttribute('role') === 'button' ||
+    element.getAttribute('data-slot') === 'button' ||
+    element.closest('button') ||
+    element.closest('[data-slot="button"]')
+  ) {
+    return 'button';
+  }
+
+  // Check if it's an interactive element
+  const hasTabIndex = element.hasAttribute('tabindex') && element.getAttribute('tabindex') !== '-1';
+  const isClickable =
+    element.getAttribute('onclick') !== null || element.getAttribute('role') === 'button';
+  const isInteractiveImage =
+    element.tagName === 'IMG' && (element.closest('a') || element.closest('button'));
+
+  if (hasTabIndex || isClickable || isInteractiveImage) {
+    return 'interactive';
+  }
+
+  return 'default';
+}
+
 function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   const [cursorPos, setCursorPos] = React.useState({ x: 0, y: 0 });
   const [isActive, setIsActive] = React.useState(false);
+  const [hoverTarget, setHoverTarget] = React.useState<HoverTarget>('default');
   const [mounted, setMounted] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const cursorRef = React.useRef<HTMLDivElement>(null);
@@ -60,8 +135,17 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
       const rect = parent.getBoundingClientRect();
       setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
       setIsActive(true);
+
+      // Detect hover target using elementFromPoint
+      const element = document.elementFromPoint(e.clientX, e.clientY);
+      const target = detectHoverTarget(element);
+      setHoverTarget(target);
     };
-    const handleMouseLeave = () => setIsActive(false);
+
+    const handleMouseLeave = () => {
+      setIsActive(false);
+      setHoverTarget('default');
+    };
 
     parent.addEventListener('mousemove', handleMouseMove);
     parent.addEventListener('mouseleave', handleMouseLeave);
@@ -73,7 +157,7 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   }, [mounted]);
 
   return (
-    <CursorContext.Provider value={{ cursorPos, isActive, containerRef, cursorRef }}>
+    <CursorContext.Provider value={{ cursorPos, isActive, hoverTarget, containerRef, cursorRef }}>
       <div ref={containerRef} data-slot='cursor-provider' {...props}>
         {children}
       </div>
@@ -86,12 +170,40 @@ type CursorProps = HTMLMotionProps<'div'> & {
 };
 
 function Cursor({ ref, children, className, style, ...props }: CursorProps) {
-  const { cursorPos, isActive, containerRef, cursorRef } = useCursor();
+  const { cursorPos, isActive, hoverTarget, containerRef, cursorRef } = useCursor();
   const [mounted, setMounted] = React.useState(false);
   React.useImperativeHandle(ref, () => cursorRef.current as HTMLDivElement);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+
+  // Calculate dynamic styles based on hoverTarget
+  const getCursorStyles = React.useMemo(() => {
+    switch (hoverTarget) {
+      case 'internal-link':
+      case 'external-link':
+      case 'interactive':
+        return { scale: 1.5, opacity: 1 };
+      case 'button':
+        return { scale: 1.5, opacity: 1 };
+      default:
+        return { scale: 1, opacity: 1 };
+    }
+  }, [hoverTarget]);
+
+  // Determine color class for SVG
+  const getColorClass = React.useMemo(() => {
+    switch (hoverTarget) {
+      case 'internal-link':
+        return 'text-blue-400'; // Lighter blue for internal links
+      case 'external-link':
+        return 'text-blue-600'; // Darker blue for external links
+      case 'button':
+        return 'text-blue-700'; // Darkest blue for buttons
+      default:
+        return 'text-blue-500'; // Medium blue for default
+    }
+  }, [hoverTarget]);
 
   // Ensure component only runs on client-side
   React.useEffect(() => {
@@ -116,6 +228,56 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
     y.set(cursorPos.y);
   }, [cursorPos, x, y]);
 
+  // Clone children and apply dynamic color class and stroke to SVG
+  const childrenWithDynamicColor = React.useMemo(() => {
+    if (React.isValidElement(children) && children.type === 'svg') {
+      const svgElement = children as React.ReactElement<SVGProps<SVGSVGElement>>;
+      const isHoverState = hoverTarget !== 'default';
+
+      // Clone SVG and update path to use stroke for hover states
+      const svgProps: SVGProps<SVGSVGElement> = {
+        ...svgElement.props,
+        className: cn(svgElement.props.className, getColorClass),
+      };
+
+      // For hover states, modify children to use stroke instead of fill
+      const modifiedChildren = React.Children.map(svgElement.props.children, child => {
+        if (React.isValidElement(child)) {
+          // Handle path elements (if any)
+          if (child.type === 'path') {
+            const pathElement = child as React.ReactElement<SVGProps<SVGPathElement>>;
+            if (isHoverState) {
+              return React.cloneElement(pathElement, {
+                ...pathElement.props,
+                fill: 'none',
+                stroke: 'currentColor',
+                strokeWidth: 1.5,
+                strokeLinejoin: 'round',
+                strokeLinecap: 'round',
+              } as React.SVGProps<SVGPathElement>);
+            }
+          }
+          // Handle circle elements
+          if (child.type === 'circle') {
+            const circleElement = child as React.ReactElement<SVGProps<SVGCircleElement>>;
+            if (isHoverState) {
+              return React.cloneElement(circleElement, {
+                ...circleElement.props,
+                fill: 'none',
+                stroke: 'currentColor',
+                strokeWidth: 1.5,
+              } as React.SVGProps<SVGCircleElement>);
+            }
+          }
+        }
+        return child;
+      });
+
+      return React.cloneElement(svgElement, svgProps, modifiedChildren);
+    }
+    return children;
+  }, [children, getColorClass, hoverTarget]);
+
   return (
     <AnimatePresence>
       {mounted && isActive && (
@@ -128,11 +290,20 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
           )}
           style={{ top: y, left: x, ...style }}
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          animate={{
+            scale: getCursorStyles.scale,
+            opacity: getCursorStyles.opacity,
+          }}
           exit={{ scale: 0, opacity: 0 }}
+          transition={{
+            type: 'spring',
+            stiffness: 500,
+            damping: 30,
+            mass: 0.5,
+          }}
           {...props}
         >
-          {children}
+          {childrenWithDynamicColor}
         </motion.div>
       )}
     </AnimatePresence>

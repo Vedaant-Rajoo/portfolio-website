@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
@@ -28,6 +29,28 @@ const navigationItems = [
 
 export function NavigationHeader() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Helper function to determine if a navigation link is active
+  const isActive = (href: string) => {
+    if (!pathname) return false;
+
+    // Normalize paths by removing trailing slashes (except for root)
+    const normalizePath = (path: string) => {
+      if (path === '/' || path === '') return '/';
+      return path.replace(/\/+$/, '');
+    };
+
+    const normalizedPathname = normalizePath(pathname);
+    const normalizedHref = normalizePath(href);
+
+    // Root path redirects to /work, so treat /work as active on root
+    if (normalizedPathname === '/' && normalizedHref === '/work') {
+      return true;
+    }
+    // Exact pathname match after normalization
+    return normalizedPathname === normalizedHref;
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -60,7 +83,14 @@ export function NavigationHeader() {
                 {navigationItems.map(item => (
                   <NavigationMenuItem key={item.href}>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyleTransparent()}>
-                      <Link href={item.href} className='text-muted-foreground text-sm'>
+                      <Link
+                        href={item.href}
+                        className={`text-sm transition-colors ${
+                          isActive(item.href)
+                            ? 'text-accent-blue font-medium'
+                            : 'text-muted-foreground'
+                        }`}
+                      >
                         {item.label}
                       </Link>
                     </NavigationMenuLink>
@@ -97,7 +127,11 @@ export function NavigationHeader() {
                   <DropdownMenuItem key={item.href} asChild>
                     <Link
                       href={item.href}
-                      className='w-full cursor-pointer'
+                      className={`w-full cursor-pointer transition-colors ${
+                        isActive(item.href)
+                          ? 'text-accent-blue font-medium'
+                          : 'text-muted-foreground'
+                      }`}
                       onClick={() => setIsOpen(false)}
                     >
                       {item.label}

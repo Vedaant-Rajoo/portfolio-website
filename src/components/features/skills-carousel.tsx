@@ -51,7 +51,7 @@ export function SkillsCarousel() {
   return (
     <div className='w-full flex flex-col items-start justify-start gap-8'>
       <h1 className='text-lg font-semibold mb-6 text-muted-foreground w-full text-center'>
-        Technologies I&apos;m Familiar With
+        Technologies I&apos;ve Worked With
       </h1>
       <section className='w-full overflow-hidden'>
         <Marquee

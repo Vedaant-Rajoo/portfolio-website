@@ -32,10 +32,6 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
-        <meta
-          httpEquiv='Content-Security-Policy'
-          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://use.typekit.net https://dev.vedaantrajoo.com; style-src 'self' 'unsafe-inline' https://use.typekit.net https://fonts.googleapis.com; font-src 'self' https://use.typekit.net https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://dev.vedaantrajoo.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
-        />
         <link rel='stylesheet' href='https://use.typekit.net/ohm3phs.css' />
       </head>
       <body
@@ -48,10 +44,7 @@ export default function RootLayout({
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 40 40'
             >
-              <path
-                fill='currentColor'
-                d='M1.8 4.4 7 36.2c.3 1.8 2.6 2.3 3.6.8l3.9-5.7c1.7-2.5 4.5-4.1 7.5-4.3l6.9-.5c1.8-.1 2.5-2.4 1.1-3.5L5 2.5c-1.4-1.1-3.5 0-3.3 1.9Z'
-              />
+              <circle cx='20' cy='20' r='15' fill='currentColor' />
             </svg>
           </Cursor>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
