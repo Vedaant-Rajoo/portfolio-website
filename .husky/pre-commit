@@ -1,1 +1,7 @@
+#!/usr/bin/env sh
+# Add bun bin to PATH if it exists
+if [ -d "$HOME/.bun/bin" ]; then
+  export PATH="$HOME/.bun/bin:$PATH"
+fi
+
 bunx lint-staged
