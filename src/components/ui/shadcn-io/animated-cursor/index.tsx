@@ -187,6 +187,11 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
     };
 
     const handleMouseLeave = () => {
+      // Clear any pending hover timeout to prevent delayed state updates
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
+      }
       setIsActive(false);
       setHoverTarget('default');
     };
