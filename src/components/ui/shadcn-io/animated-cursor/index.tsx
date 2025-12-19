@@ -68,6 +68,17 @@ function isExternalLink(linkElement: HTMLAnchorElement): boolean {
   return false;
 }
 
+/**
+ * Determines the hover target type for a given DOM element.
+ *
+ * Evaluates whether the element (or its closest ancestor) should be treated as an external link,
+ * internal link, button, interactive control, or default non-interactive area.
+ *
+ * @param element - The DOM element to evaluate; `null` is treated as a non-interactive target.
+ * @returns `'external-link'` if the element is an external anchor, `'internal-link'` if it is an internal anchor,
+ * `'button'` if it is a button (or a button-like element), `'interactive'` if it is keyboard/clickable or an image inside an interactive control,
+ * and `'default'` otherwise.
+ */
 function detectHoverTarget(element: Element | null): HoverTarget {
   if (!element) return 'default';
 
@@ -97,8 +108,7 @@ function detectHoverTarget(element: Element | null): HoverTarget {
   const hasTabIndex = element.hasAttribute('tabindex') && element.getAttribute('tabindex') !== '-1';
   const isClickable =
     element.getAttribute('onclick') !== null || element.getAttribute('role') === 'button';
-  const isInteractiveImage =
-    element.tagName === 'IMG' && (element.closest('a') || element.closest('button'));
+  const isInteractiveImage = element.tagName === 'IMG' && element.closest('button');
 
   if (hasTabIndex || isClickable || isInteractiveImage) {
     return 'interactive';
@@ -107,6 +117,61 @@ function detectHoverTarget(element: Element | null): HoverTarget {
   return 'default';
 }
 
+/**
+ * Determines the hover target at or near the given viewport coordinates by sampling multiple points around the cursor.
+ *
+ * Samples the center point and four offset points (left, right, top, bottom) by up to `bufferSize` pixels, ignores the provided cursor element, and returns the first detected non-'default' hover target.
+ *
+ * @param clientX - The X coordinate in viewport space to sample.
+ * @param clientY - The Y coordinate in viewport space to sample.
+ * @param cursorRef - Ref to the cursor element; any elements equal to or contained within this ref are ignored when detecting targets.
+ * @param bufferSize - Maximum offset in pixels for the surrounding sample points (defaults to 8).
+ * @returns The detected HoverTarget at or near the provided coordinates, or `'default'` if none is found.
+ */
+function detectHoverTargetWithBuffer(
+  clientX: number,
+  clientY: number,
+  cursorRef: React.RefObject<HTMLDivElement | null>,
+  bufferSize: number = 8
+): HoverTarget {
+  const offsets = [
+    { x: 0, y: 0 }, // center (most important)
+    { x: -bufferSize, y: 0 }, // left
+    { x: bufferSize, y: 0 }, // right
+    { x: 0, y: -bufferSize }, // top
+    { x: 0, y: bufferSize }, // bottom
+  ];
+
+  for (const offset of offsets) {
+    const elements = document.elementsFromPoint(clientX + offset.x, clientY + offset.y);
+    // Skip our cursor element if it exists
+    const element =
+      elements.find(
+        el => !cursorRef.current || (el !== cursorRef.current && !cursorRef.current.contains(el))
+      ) ?? null;
+
+    const target = detectHoverTarget(element);
+    if (target !== 'default') {
+      return target;
+    }
+  }
+
+  return 'default';
+}
+
+/**
+ * Provides cursor tracking state and hover-target detection to descendant components.
+ *
+ * This component attaches mouse listeners to its parent element to track cursor position,
+ * active state, and a semantic hover target (e.g., "internal-link", "external-link", "button", "default"),
+ * and exposes that data via CursorContext: `cursorPos`, `isActive`, `hoverTarget`, `containerRef`, and `cursorRef`.
+ *
+ * Side effects:
+ * - Ensures the provider's parent has `position: relative` when it was `static`.
+ * - Debounces leaving hover state by 50ms to reduce flicker.
+ *
+ * @returns The CursorContext provider wrapping the given children and a container div with data-slot="cursor-provider".
+ */
 function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   const [cursorPos, setCursorPos] = React.useState({ x: 0, y: 0 });
   const [isActive, setIsActive] = React.useState(false);
@@ -114,6 +179,7 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   const [mounted, setMounted] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const cursorRef = React.useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
   // Ensure component only runs on client-side
@@ -136,13 +202,35 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
       setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
       setIsActive(true);
 
-      // Detect hover target using elementFromPoint
-      const element = document.elementFromPoint(e.clientX, e.clientY);
-      const target = detectHoverTarget(element);
-      setHoverTarget(target);
+      const target = detectHoverTargetWithBuffer(e.clientX, e.clientY, cursorRef, 8);
+
+      if (target !== 'default') {
+        // Entering hover - apply immediately
+        // Always clear any pending timeout when entering hover to prevent race conditions
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+          hoverTimeoutRef.current = null;
+        }
+        setHoverTarget(target);
+      } else {
+        // Leaving hover - delay to prevent flicker
+        // Always clear and recreate timeout to ensure fresh delay on each leave event
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+        }
+        hoverTimeoutRef.current = setTimeout(() => {
+          setHoverTarget('default');
+          hoverTimeoutRef.current = null;
+        }, 50);
+      }
     };
 
     const handleMouseLeave = () => {
+      // Clear any pending hover timeout to prevent delayed state updates
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
+      }
       setIsActive(false);
       setHoverTarget('default');
     };
@@ -153,6 +241,9 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
     return () => {
       parent.removeEventListener('mousemove', handleMouseMove);
       parent.removeEventListener('mouseleave', handleMouseLeave);
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
     };
   }, [mounted]);
 
@@ -179,16 +270,8 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
 
   // Calculate dynamic styles based on hoverTarget
   const getCursorStyles = React.useMemo(() => {
-    switch (hoverTarget) {
-      case 'internal-link':
-      case 'external-link':
-      case 'interactive':
-        return { scale: 1.5, opacity: 1 };
-      case 'button':
-        return { scale: 1.5, opacity: 1 };
-      default:
-        return { scale: 1, opacity: 1 };
-    }
+    const isHovering = hoverTarget !== 'default';
+    return { scale: isHovering ? 1.5 : 1, opacity: 1 };
   }, [hoverTarget]);
 
   // Determine color class for SVG
@@ -221,7 +304,7 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
     return () => {
       if (parentElement) parentElement.style.cursor = 'default';
     };
-  }, [mounted, containerRef, cursorPos, isActive]);
+  }, [mounted, containerRef, isActive]);
 
   React.useEffect(() => {
     x.set(cursorPos.x);

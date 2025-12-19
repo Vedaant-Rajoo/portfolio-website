@@ -1,8 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { Linkedin, Github, Twitter } from 'lucide-react';
+import { GitHubIcon, LinkedInIcon, XIcon } from '@/components/ui/icons';
 
+/**
+ * Renders a contact section with a location map and social link buttons for LinkedIn, GitHub, and X.
+ *
+ * @returns The JSX element for the contact section containing a map image, a location caption, and three styled social links.
+ */
 export function ContactMe() {
   return (
     <div className='w-full max-w-7xl mx-auto'>
@@ -38,9 +43,9 @@ export function ContactMe() {
             href='https://linkedin.com/in/vedaant-rajoo'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center gap-3 px-6 py-3 rounded-full border border-foreground/20 bg-background text-foreground hover:bg-[#0077b5] hover:text-white hover:border-[#0077b5] dark:bg-input/30 dark:border-input transition-all duration-200 hover:scale-[1.02] shadow-sm'
+            className='w-[200px] flex items-center gap-3 px-6 py-3 rounded-full border border-foreground/20 bg-background text-foreground dark:bg-input/30 dark:border-input transition-colors duration-200 hover:bg-[#0077b5] hover:text-white hover:border-[#0077b5]'
           >
-            <Linkedin className='w-5 h-5' />
+            <LinkedInIcon className='w-5 h-5' />
             <span className='font-medium'>LinkedIn</span>
           </a>
 
@@ -48,20 +53,20 @@ export function ContactMe() {
             href='https://github.com/Vedaant-Rajoo'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center gap-3 px-6 py-3 rounded-full border border-foreground/20 bg-background text-foreground hover:bg-[#333] hover:text-white hover:border-[#333] dark:bg-input/30 dark:border-input transition-all duration-200 hover:scale-[1.02] shadow-sm'
+            className='w-[200px] flex items-center gap-3 px-6 py-3 rounded-full border border-foreground/20 bg-background text-foreground dark:bg-input/30 dark:border-input transition-colors duration-200 hover:bg-[#333] hover:text-white hover:border-[#333]'
           >
-            <Github className='w-5 h-5' />
+            <GitHubIcon className='w-5 h-5' />
             <span className='font-medium'>GitHub</span>
           </a>
 
           <a
-            href='https://twitter.com'
+            href='https://x.com/iamnewedia'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center gap-3 px-6 py-3 rounded-full border border-foreground/20 bg-background text-foreground hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:bg-input/30 dark:border-input transition-all duration-200 hover:scale-[1.02] shadow-sm'
+            className='w-[200px] flex items-center gap-3 px-6 py-3 rounded-full border border-foreground/20 bg-background text-foreground dark:bg-input/30 dark:border-input transition-colors duration-200 hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white'
           >
-            <Twitter className='w-5 h-5' />
-            <span className='font-medium'>X / Twitter</span>
+            <XIcon className='w-5 h-5' />
+            <span className='font-medium'>X</span>
           </a>
         </div>
       </div>

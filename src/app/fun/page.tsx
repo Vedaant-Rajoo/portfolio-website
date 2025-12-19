@@ -1,12 +1,10 @@
-import { NavigationHeader, FunSection } from '@/components/layout';
+import { FunSection } from '@/components/layout';
 
+/**
+ * Render the page content consisting of the FunSection component.
+ *
+ * @returns A React element that renders the `FunSection` component.
+ */
 export default function FunPage() {
-  return (
-    <div className='min-h-screen'>
-      <NavigationHeader />
-      <main>
-        <FunSection />
-      </main>
-    </div>
-  );
+  return <FunSection />;
 }

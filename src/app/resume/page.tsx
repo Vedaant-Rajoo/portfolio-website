@@ -1,12 +1,10 @@
-import { NavigationHeader, ResumeSection } from '@/components/layout';
+import { ResumeSection } from '@/components/layout';
 
+/**
+ * Render the resume page.
+ *
+ * @returns The JSX element that displays the resume section.
+ */
 export default function ResumePage() {
-  return (
-    <div className='min-h-screen'>
-      <NavigationHeader />
-      <main>
-        <ResumeSection />
-      </main>
-    </div>
-  );
+  return <ResumeSection />;
 }
