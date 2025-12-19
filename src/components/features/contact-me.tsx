@@ -3,6 +3,11 @@
 import Image from 'next/image';
 import { GitHubIcon, LinkedInIcon, XIcon } from '@/components/ui/icons';
 
+/**
+ * Renders a contact section with a location map and social link buttons for LinkedIn, GitHub, and X.
+ *
+ * @returns The JSX element for the contact section containing a map image, a location caption, and three styled social links.
+ */
 export function ContactMe() {
   return (
     <div className='w-full max-w-7xl mx-auto'>

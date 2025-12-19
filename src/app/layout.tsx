@@ -26,6 +26,14 @@ export const metadata: Metadata = {
   description: "vedaantrajoo's portfolio",
 };
 
+/**
+ * Root layout that composes global providers, font variables, and the application chrome.
+ *
+ * Renders the top-level HTML structure including a Typekit stylesheet link, body classes for configured fonts, a custom cursor provider and cursor graphic, a theme provider that wraps the app shell (navigation header and main content), and a SpeedInsights collector.
+ *
+ * @param children - The page or application content to render inside the layout's main element
+ * @returns The root HTML document element for the application
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
