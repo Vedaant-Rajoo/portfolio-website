@@ -107,6 +107,35 @@ function detectHoverTarget(element: Element | null): HoverTarget {
   return 'default';
 }
 
+function detectHoverTargetWithBuffer(
+  clientX: number,
+  clientY: number,
+  cursorRef: React.RefObject<HTMLDivElement | null>,
+  bufferSize: number = 8
+): HoverTarget {
+  const offsets = [
+    { x: 0, y: 0 }, // center (most important)
+    { x: -bufferSize, y: 0 }, // left
+    { x: bufferSize, y: 0 }, // right
+    { x: 0, y: -bufferSize }, // top
+    { x: 0, y: bufferSize }, // bottom
+  ];
+
+  for (const offset of offsets) {
+    const elements = document.elementsFromPoint(clientX + offset.x, clientY + offset.y);
+    // Skip our cursor element
+    const element =
+      elements.find(el => el !== cursorRef.current && !cursorRef.current?.contains(el)) ?? null;
+
+    const target = detectHoverTarget(element);
+    if (target !== 'default') {
+      return target;
+    }
+  }
+
+  return 'default';
+}
+
 function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   const [cursorPos, setCursorPos] = React.useState({ x: 0, y: 0 });
   const [isActive, setIsActive] = React.useState(false);
@@ -114,6 +143,7 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   const [mounted, setMounted] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const cursorRef = React.useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
   // Ensure component only runs on client-side
@@ -136,10 +166,24 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
       setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
       setIsActive(true);
 
-      // Detect hover target using elementFromPoint
-      const element = document.elementFromPoint(e.clientX, e.clientY);
-      const target = detectHoverTarget(element);
-      setHoverTarget(target);
+      const target = detectHoverTargetWithBuffer(e.clientX, e.clientY, cursorRef, 8);
+
+      if (target !== 'default') {
+        // Entering hover - apply immediately
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+          hoverTimeoutRef.current = null;
+        }
+        setHoverTarget(target);
+      } else {
+        // Leaving hover - delay to prevent flicker
+        if (!hoverTimeoutRef.current) {
+          hoverTimeoutRef.current = setTimeout(() => {
+            setHoverTarget('default');
+            hoverTimeoutRef.current = null;
+          }, 50);
+        }
+      }
     };
 
     const handleMouseLeave = () => {
@@ -153,6 +197,9 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
     return () => {
       parent.removeEventListener('mousemove', handleMouseMove);
       parent.removeEventListener('mouseleave', handleMouseLeave);
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
     };
   }, [mounted]);
 
