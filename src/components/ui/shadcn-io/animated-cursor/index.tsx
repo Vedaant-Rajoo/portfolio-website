@@ -68,6 +68,17 @@ function isExternalLink(linkElement: HTMLAnchorElement): boolean {
   return false;
 }
 
+/**
+ * Determines the hover target type for a given DOM element.
+ *
+ * Evaluates whether the element (or its closest ancestor) should be treated as an external link,
+ * internal link, button, interactive control, or default non-interactive area.
+ *
+ * @param element - The DOM element to evaluate; `null` is treated as a non-interactive target.
+ * @returns `'external-link'` if the element is an external anchor, `'internal-link'` if it is an internal anchor,
+ * `'button'` if it is a button (or a button-like element), `'interactive'` if it is keyboard/clickable or an image inside an interactive control,
+ * and `'default'` otherwise.
+ */
 function detectHoverTarget(element: Element | null): HoverTarget {
   if (!element) return 'default';
 
@@ -107,6 +118,17 @@ function detectHoverTarget(element: Element | null): HoverTarget {
   return 'default';
 }
 
+/**
+ * Determines the hover target at or near the given viewport coordinates by sampling multiple points around the cursor.
+ *
+ * Samples the center point and four offset points (left, right, top, bottom) by up to `bufferSize` pixels, ignores the provided cursor element, and returns the first detected non-'default' hover target.
+ *
+ * @param clientX - The X coordinate in viewport space to sample.
+ * @param clientY - The Y coordinate in viewport space to sample.
+ * @param cursorRef - Ref to the cursor element; any elements equal to or contained within this ref are ignored when detecting targets.
+ * @param bufferSize - Maximum offset in pixels for the surrounding sample points (defaults to 8).
+ * @returns The detected HoverTarget at or near the provided coordinates, or `'default'` if none is found.
+ */
 function detectHoverTargetWithBuffer(
   clientX: number,
   clientY: number,
@@ -136,6 +158,19 @@ function detectHoverTargetWithBuffer(
   return 'default';
 }
 
+/**
+ * Provides cursor tracking state and hover-target detection to descendant components.
+ *
+ * This component attaches mouse listeners to its parent element to track cursor position,
+ * active state, and a semantic hover target (e.g., "internal-link", "external-link", "button", "default"),
+ * and exposes that data via CursorContext: `cursorPos`, `isActive`, `hoverTarget`, `containerRef`, and `cursorRef`.
+ *
+ * Side effects:
+ * - Ensures the provider's parent has `position: relative` when it was `static`.
+ * - Debounces leaving hover state by 50ms to reduce flicker.
+ *
+ * @returns The CursorContext provider wrapping the given children and a container div with data-slot="cursor-provider".
+ */
 function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
   const [cursorPos, setCursorPos] = React.useState({ x: 0, y: 0 });
   const [isActive, setIsActive] = React.useState(false);

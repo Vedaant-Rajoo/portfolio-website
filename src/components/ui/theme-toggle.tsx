@@ -6,6 +6,13 @@ import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import React, { useState, useEffect } from 'react';
 
+/**
+ * Renders a theme toggle button that switches the app theme between "light" and "dark" and animates the icon when the theme changes.
+ *
+ * The component intentionally renders nothing for a short mount delay, and triggers a brief rotation/fade animation each time the theme is toggled.
+ *
+ * @returns The toggle button element, or `null` before the component has mounted.
+ */
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
