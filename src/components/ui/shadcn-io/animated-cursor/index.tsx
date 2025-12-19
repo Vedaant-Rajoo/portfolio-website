@@ -146,10 +146,9 @@ function detectHoverTargetWithBuffer(
   for (const offset of offsets) {
     const elements = document.elementsFromPoint(clientX + offset.x, clientY + offset.y);
     // Skip our cursor element - check if cursorRef exists first to avoid logic errors
+    const cursor = cursorRef.current;
     const element =
-      elements.find(
-        el => cursorRef.current && el !== cursorRef.current && !cursorRef.current.contains(el)
-      ) ?? null;
+      elements.find(el => (cursor ? el !== cursor && !cursor.contains(el) : true)) ?? null;
 
     const target = detectHoverTarget(element);
     if (target !== 'default') {
