@@ -27,9 +27,13 @@ export const metadata: Metadata = {
 };
 
 /**
- * Root layout that composes global providers, font variables, and the application chrome.
+ * Root layout composing global providers and application chrome.
  *
- * Renders the top-level HTML structure including a Typekit stylesheet link, body classes for configured fonts, a custom cursor provider and cursor graphic, a theme provider that wraps the app shell (navigation header and main content), and a SpeedInsights collector.
+ * Renders the HTML document with:
+ * - Typekit fonts and configured font variables
+ * - Custom animated cursor provider
+ * - Theme provider wrapping the navigation header and main content
+ * - Analytics and performance monitoring (SpeedInsights, Analytics)
  *
  * @param children - The page or application content to render inside the layout's main element
  * @returns The root HTML document element for the application

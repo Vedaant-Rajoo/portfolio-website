@@ -108,8 +108,7 @@ function detectHoverTarget(element: Element | null): HoverTarget {
   const hasTabIndex = element.hasAttribute('tabindex') && element.getAttribute('tabindex') !== '-1';
   const isClickable =
     element.getAttribute('onclick') !== null || element.getAttribute('role') === 'button';
-  const isInteractiveImage =
-    element.tagName === 'IMG' && (element.closest('a') || element.closest('button'));
+  const isInteractiveImage = element.tagName === 'IMG' && element.closest('button');
 
   if (hasTabIndex || isClickable || isInteractiveImage) {
     return 'interactive';
@@ -145,10 +144,11 @@ function detectHoverTargetWithBuffer(
 
   for (const offset of offsets) {
     const elements = document.elementsFromPoint(clientX + offset.x, clientY + offset.y);
-    // Skip our cursor element - check if cursorRef exists first to avoid logic errors
-    const cursor = cursorRef.current;
+    // Skip our cursor element if it exists
     const element =
-      elements.find(el => (cursor ? el !== cursor && !cursor.contains(el) : true)) ?? null;
+      elements.find(
+        el => !cursorRef.current || (el !== cursorRef.current && !cursorRef.current.contains(el))
+      ) ?? null;
 
     const target = detectHoverTarget(element);
     if (target !== 'default') {
@@ -270,16 +270,8 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
 
   // Calculate dynamic styles based on hoverTarget
   const getCursorStyles = React.useMemo(() => {
-    switch (hoverTarget) {
-      case 'internal-link':
-      case 'external-link':
-      case 'interactive':
-        return { scale: 1.5, opacity: 1 };
-      case 'button':
-        return { scale: 1.5, opacity: 1 };
-      default:
-        return { scale: 1, opacity: 1 };
-    }
+    const isHovering = hoverTarget !== 'default';
+    return { scale: isHovering ? 1.5 : 1, opacity: 1 };
   }, [hoverTarget]);
 
   // Determine color class for SVG
@@ -312,7 +304,7 @@ function Cursor({ ref, children, className, style, ...props }: CursorProps) {
     return () => {
       if (parentElement) parentElement.style.cursor = 'default';
     };
-  }, [mounted, containerRef, cursorPos, isActive]);
+  }, [mounted, containerRef, isActive]);
 
   React.useEffect(() => {
     x.set(cursorPos.x);
