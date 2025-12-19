@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Moon, Sun } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useTheme } from 'next-themes';
 import React, { useState, useEffect } from 'react';
 
@@ -16,7 +16,8 @@ import React, { useState, useEffect } from 'react';
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const [shouldAnimate, setShouldAnimate] = useState(false);
+  // Track if user has interacted - use state to ensure proper re-renders on remount
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -24,20 +25,10 @@ export function ThemeToggle() {
     }, 100);
   }, []);
 
-  // Reset animation flag after animation completes
-  useEffect(() => {
-    if (shouldAnimate) {
-      const timer = setTimeout(() => {
-        setShouldAnimate(false);
-      }, 300); // Match animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [shouldAnimate]);
-
   const toggleTheme = () => {
+    setHasInteracted(true);
     const isLight = theme === 'light';
     const newTheme = isLight ? 'dark' : 'light';
-    setShouldAnimate(true);
     setTheme(newTheme);
   };
 
@@ -59,8 +50,8 @@ export function ThemeToggle() {
       >
         <motion.div
           key={theme}
-          initial={shouldAnimate ? { rotate: 0, opacity: 0 } : false}
-          animate={{ rotate: shouldAnimate ? 360 : 0, opacity: 1 }}
+          initial={hasInteracted ? { rotate: 0, opacity: 0 } : false}
+          animate={{ rotate: hasInteracted ? 360 : 0, opacity: 1 }}
           exit={{ rotate: -360, opacity: 0 }}
           transition={{
             duration: 0.3,

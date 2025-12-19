@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Crimson_Pro } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 import { Cursor, CursorProvider } from '@/components/ui/shadcn-io/animated-cursor';
 import { NavigationHeader } from '@/components/layout';
 const geistSans = Geist({
@@ -64,6 +65,7 @@ export default function RootLayout({
           </ThemeProvider>
         </CursorProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
