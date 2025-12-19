@@ -207,6 +207,7 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
 
       if (target !== 'default') {
         // Entering hover - apply immediately
+        // Always clear any pending timeout when entering hover to prevent race conditions
         if (hoverTimeoutRef.current) {
           clearTimeout(hoverTimeoutRef.current);
           hoverTimeoutRef.current = null;
@@ -214,12 +215,14 @@ function CursorProvider({ ref, children, ...props }: CursorProviderProps) {
         setHoverTarget(target);
       } else {
         // Leaving hover - delay to prevent flicker
-        if (!hoverTimeoutRef.current) {
-          hoverTimeoutRef.current = setTimeout(() => {
-            setHoverTarget('default');
-            hoverTimeoutRef.current = null;
-          }, 50);
+        // Always clear and recreate timeout to ensure fresh delay on each leave event
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
         }
+        hoverTimeoutRef.current = setTimeout(() => {
+          setHoverTarget('default');
+          hoverTimeoutRef.current = null;
+        }, 50);
       }
     };
 
