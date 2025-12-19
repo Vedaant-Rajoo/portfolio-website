@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Cursor, CursorProvider } from '@/components/ui/shadcn-io/animated-cursor';
+import { NavigationHeader } from '@/components/layout';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -48,7 +49,10 @@ export default function RootLayout({
             </svg>
           </Cursor>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-            {children}
+            <div className='min-h-screen'>
+              <NavigationHeader />
+              <main>{children}</main>
+            </div>
           </ThemeProvider>
         </CursorProvider>
         <SpeedInsights />

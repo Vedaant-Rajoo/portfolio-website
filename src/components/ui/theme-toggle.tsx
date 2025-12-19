@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -16,15 +17,26 @@ export function ThemeToggle() {
     }, 100);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
+  // Reset animation flag after animation completes
+  useEffect(() => {
+    if (shouldAnimate) {
+      const timer = setTimeout(() => {
+        setShouldAnimate(false);
+      }, 300); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [shouldAnimate]);
 
   const toggleTheme = () => {
     const isLight = theme === 'light';
     const newTheme = isLight ? 'dark' : 'light';
+    setShouldAnimate(true);
     setTheme(newTheme);
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -40,8 +52,8 @@ export function ThemeToggle() {
       >
         <motion.div
           key={theme}
-          initial={{ rotate: 0, opacity: 0 }}
-          animate={{ rotate: 360, opacity: 1 }}
+          initial={shouldAnimate ? { rotate: 0, opacity: 0 } : false}
+          animate={{ rotate: shouldAnimate ? 360 : 0, opacity: 1 }}
           exit={{ rotate: -360, opacity: 0 }}
           transition={{
             duration: 0.3,
